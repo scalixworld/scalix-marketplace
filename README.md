@@ -1,5 +1,7 @@
 # scalix-marketplace
 
+[![Catalog CI](https://github.com/scalixworld/scalix-marketplace/actions/workflows/build-catalog.yml/badge.svg)](https://github.com/scalixworld/scalix-marketplace/actions/workflows/build-catalog.yml)
+
 **Scalix Marketplace**: the static, Git-backed catalog of coding agents (MCP servers, skills, rules, and subagents) consumed by Scalix Coder, the Scalix IDE agent, and Scalix Editor.
 
 There is no runtime server or database: the catalog is plain files in Git, compiled to JSON by `bin/generate-catalog.ts`, browsable on the web, and served as static files at:
