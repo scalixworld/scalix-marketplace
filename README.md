@@ -4,9 +4,8 @@
 
 **Scalix Marketplace**: the static, Git-backed catalog of coding agents (MCP servers, skills, rules, and subagents) consumed by Scalix Coder, the Scalix IDE agent, and Scalix Editor.
 
-There is no runtime server or database: the catalog is plain files in Git, compiled to JSON by `bin/generate-catalog.ts`, browsable on the web, and served as static files at:
+There is no runtime server or database: the catalog is plain files in Git, compiled to JSON by `bin/generate-catalog.ts`, and served statically from [Scalix Cloud](https://scalix.world):
 
-- `https://scalix.world/marketplace` (browsable web catalog)
 - `https://scalix.world/agent-catalog/listings` (JSON index)
 - `https://scalix.world/agent-catalog/listings/<id>` (JSON listing detail)
 
@@ -83,8 +82,14 @@ Everything in this repo is published to every client, so every source file goes 
 
 ## Static distribution
 
-`dist/listings/` is committed so static hosting never needs a build step. The website (`https://scalix.world/marketplace` and `https://scalix.world/agent-catalog/listings`) mirrors `dist/listings/` during deployment.
+`dist/listings/` is committed so static hosting never needs a build step. The website (`https://scalix.world/agent-catalog/listings`) mirrors `dist/listings/` during deployment.
 
 ## Adding a listing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). Short version: add one folder or file, run `pnpm run generate && pnpm test && pnpm run check`, and open a pull request. Every PR runs automatically through `scalix-review-bot` (`.github/workflows/scalix-review-bot.yml`) before a maintainer merges.
+
+## License & Ownership
+
+Catalog definitions and generator tooling in this repository are open-sourced under the MIT License — see [LICENSE](./LICENSE). **Scalix Cloud**, **Scalix Coder**, **Scalix IDE**, and **Scalix Editor** are proprietary, closed-source products owned by **Scalix World Pvt Ltd** (India) and licensed internationally via **Energy FW Ltd** (UK).
+
+© 2026 Scalix World Pvt Ltd · [Terms](https://scalix.world/terms) · [Privacy](https://scalix.world/privacy) · [Security](https://scalix.world/security)
