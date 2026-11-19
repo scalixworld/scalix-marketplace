@@ -1,0 +1,33 @@
+{
+  "id": "context7",
+  "kind": "mcp",
+  "name": "Context7",
+  "summary": "Up-to-date documentation for any library, pulled straight from the source repo into the agent's context.",
+  "description": "Upstash Context7 MCP server over Streamable HTTP (https://mcp.context7.com/mcp). Fetches current, version-matched library docs instead of relying on stale training data. Works without a key on the free tier; a Context7 API key raises the rate limit.",
+  "author": "Upstash",
+  "homepage_url": "https://context7.com",
+  "icon_url": "",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "documentation"
+  ],
+  "tags": [
+    "docs",
+    "libraries",
+    "upstash"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "context7",
+    "serverUrl": "https://mcp.context7.com/mcp"
+  }
+}

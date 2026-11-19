@@ -1,0 +1,40 @@
+{
+  "id": "github",
+  "kind": "mcp",
+  "name": "GitHub",
+  "summary": "Official GitHub MCP server for repositories, issues, pull requests, Actions, code scanning, and Copilot over one authenticated endpoint.",
+  "description": "GitHub's hosted MCP server over Streamable HTTP (https://api.githubcopilot.com/mcp/). Authenticate with a personal access token by setting GITHUB_PERSONAL_ACCESS_TOKEN, or with OAuth in clients that support it.",
+  "author": "GitHub",
+  "homepage_url": "https://github.com/github/github-mcp-server",
+  "icon_url": "",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "development",
+    "vcs"
+  ],
+  "tags": [
+    "github",
+    "git",
+    "pull-requests",
+    "issues",
+    "actions"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "github",
+    "serverUrl": "https://api.githubcopilot.com/mcp/",
+    "authorizationEnv": "GITHUB_PERSONAL_ACCESS_TOKEN",
+    "requiredEnv": [
+      "GITHUB_PERSONAL_ACCESS_TOKEN"
+    ]
+  }
+}

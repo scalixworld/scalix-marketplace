@@ -1,0 +1,41 @@
+{
+  "id": "scalix-cloud",
+  "kind": "mcp",
+  "name": "Scalix Cloud",
+  "summary": "Provisions and manages Scalix Cloud resources including isolated sandboxes, persistent Linux computers, serverless PostgreSQL, functions, object storage, and AI inference.",
+  "description": "Official Scalix Cloud MCP server over Streamable HTTP. Connects coding agents to serverless PostgreSQL (ScalixNova), serverless functions, isolated sandboxes, persistent Linux computers, object storage, and AI inference using a single API key read from SCALIX_API_KEY.",
+  "author": "Scalix World",
+  "homepage_url": "https://scalix.world/mcp",
+  "icon_url": "https://scalix.world/scalix-logo.svg",
+  "trust": "official",
+  "install_count": 0,
+  "version": "1.6.0",
+  "featured": true,
+  "categories": [
+    "cloud",
+    "development"
+  ],
+  "tags": [
+    "scalix",
+    "cloud",
+    "postgres",
+    "sandboxes",
+    "functions",
+    "ai"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "scalix-cloud",
+    "serverUrl": "https://api.scalix.world/v1/mcp",
+    "authorizationEnv": "SCALIX_API_KEY",
+    "requiredEnv": [
+      "SCALIX_API_KEY"
+    ]
+  }
+}

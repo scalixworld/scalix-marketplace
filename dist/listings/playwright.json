@@ -1,0 +1,38 @@
+{
+  "id": "playwright",
+  "kind": "mcp",
+  "name": "Playwright MCP",
+  "summary": "Automate browsers through Playwright's accessibility tree to navigate pages, fill forms, and run end-to-end checks.",
+  "description": "Microsoft's Playwright MCP server, spawned locally via npx (@playwright/mcp@latest). Interacts with pages through structured accessibility snapshots, so no vision model is needed. Runs a real browser locally, so the client asks for explicit confirmation before installing a stdio server.",
+  "author": "Microsoft",
+  "homepage_url": "https://github.com/microsoft/playwright-mcp",
+  "icon_url": "",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "testing",
+    "browser"
+  ],
+  "tags": [
+    "playwright",
+    "browser",
+    "automation",
+    "e2e"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "stdio",
+    "serverLabel": "playwright",
+    "command": "npx",
+    "args": [
+      "@playwright/mcp@latest"
+    ]
+  }
+}

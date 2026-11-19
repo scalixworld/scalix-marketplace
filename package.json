@@ -1,0 +1,24 @@
+{
+  "name": "scalix-marketplace",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "description": "Static, Git-backed catalog of coding agents (MCP servers, skills, rules, subagents) consumed by Scalix Coder, the Scalix IDE agent and Scalix Editor.",
+  "type": "module",
+  "scripts": {
+    "generate": "tsx bin/generate-catalog.ts",
+    "review": "tsx bin/review-pr.ts",
+    "test": "node --import tsx --test bin/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit",
+    "sync:skills": "node scripts/sync-skills.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

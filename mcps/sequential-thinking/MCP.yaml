@@ -1,0 +1,28 @@
+id: sequential-thinking
+name: Sequential Thinking
+summary: Structured step-by-step problem solving that lets an agent plan, branch, and revise before committing to an answer.
+description: The reference Sequential Thinking MCP server, spawned locally via npx (@modelcontextprotocol/server-sequential-thinking). Gives the model a tool for step-by-step reasoning with revision and branching. Runs locally, so the client asks for explicit confirmation before installing a stdio server.
+author: Model Context Protocol
+homepage_url: https://github.com/modelcontextprotocol/servers
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - development
+  - reasoning
+tags:
+  - reasoning
+  - planning
+  - reference-server
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: sequential-thinking
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-sequential-thinking"

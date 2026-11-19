@@ -1,0 +1,36 @@
+{
+  "id": "scalix-ai",
+  "kind": "skill",
+  "name": "scalix-ai",
+  "summary": "Run AI inference on Scalix Cloud through the OpenAI-compatible API: chat completions, streaming, embeddings, image generation, speech, transcription, RAG, and web research across the public multi-vendor Scalix AI model catalog. Use when the user wants LLM inference on Scalix, asks about Scalix AI or its model catalog, or wants to point existing OpenAI-compatible code at Scalix.",
+  "description": "Run AI inference on Scalix Cloud through the OpenAI-compatible API: chat completions, streaming, embeddings, image generation, speech, transcription, RAG, and web research across the public multi-vendor Scalix AI model catalog. Use when the user wants LLM inference on Scalix, asks about Scalix AI or its model catalog, or wants to point existing OpenAI-compatible code at Scalix.",
+  "author": "Scalix World",
+  "homepage_url": "",
+  "icon_url": "",
+  "trust": "official",
+  "install_count": 0,
+  "version": "1.6.0",
+  "featured": false,
+  "categories": [
+    "development"
+  ],
+  "tags": [
+    "scalix",
+    "ai"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "skill",
+    "name": "scalix-ai",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: scalix-ai\ndescription: \"Run AI inference on Scalix Cloud through the OpenAI-compatible API: chat completions, streaming, embeddings, image generation, speech, transcription, RAG, and web research across the public multi-vendor Scalix AI model catalog. Use when the user wants LLM inference on Scalix, asks about Scalix AI or its model catalog, or wants to point existing OpenAI-compatible code at Scalix.\"\nmetadata:\n  author: Scalix World\n  version: 1.6.0\n  trust: official\n  categories:\n    - development\n  tags:\n    - scalix\n    - ai\n  surfaces:\n    - coder\n    - ide\n    - editor\n  source:\n    repository: scalixworld/scalix-cloud-mcp\n---\n\n\n# Scalix AI — inference through one endpoint\n\nScalix AI is a multi-vendor pass-through catalog served through an OpenAI-compatible API\nwith unified auth, smart routing with automatic fallback, cost controls, and usage tracking.\nVendor names, logos, and model ids are public: the catalog is published openly on the\nwebsite, pricing page, and docs.\n\n**Retired:** the first-party Scalix Lumio and Candela model families were deprecated\n2026-09-10 and are absent from the live catalog. Never reference `scalix-lumio-*` or\nCandela model ids. GLM 5.1 / 5.2 are also deprecated and not in the catalog.\n\n## Picking a model id — always live, never hardcoded\n\nThe catalog and prices change continuously upstream. Do not assume a model list from\nmemory or from any markdown file:\n\n```bash\n# unauthenticated public catalog (same source the website renders)\ncurl -s https://api.scalix.world/v1/ai/public/models\n\n# authenticated, caller-scoped\ncurl -s https://api.scalix.world/v1/ai/models -H \"Authorization: Bearer $SCALIX_API_KEY\"\n```\n\nPricing guardrail: quote prices only from the live price book (`billing_pricing`) or the\ncatalog/pricing endpoints, never from markdown docs — displayed prices must match what\ncustomers are charged.\n\n## Migrating existing code\n\nThe API is OpenAI-compatible: existing OpenAI-client code works with a base-URL change to\n`https://api.scalix.world/v1/ai` and the Scalix API key. That is the whole migration for\nchat completions.\n\n## Chat completions\n\n```bash\ncurl -X POST https://api.scalix.world/v1/ai/chat/completions \\\n  -H \"Authorization: Bearer $SCALIX_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"<id-from-the-live-catalog>\",\n    \"messages\": [{\"role\": \"user\", \"content\": \"What is Scalix Cloud?\"}]\n  }'\n```\n\nStreaming: `POST /v1/ai/chat/completions/stream` returns server-sent events.\n\n## CLI\n\n```bash\nscalix-cloud ai models\nscalix-cloud ai infer \"Explain quantum computing in one sentence\" --model <id>\n```\n\nThe prompt is positional; `--model` defaults to `auto` (smart routing).\n\n## Beyond chat\n\nThe same API serves embeddings, image generation, speech, transcription, RAG, and web\nresearch — see the full reference: https://docs.scalix.world/ai\n\n## Confidentiality\n\nPublic: vendor names, model ids, catalog, sell prices. Still confidential: internal\nrouting decisions, upstream costs, and margins.\n"
+      }
+    ]
+  }
+}

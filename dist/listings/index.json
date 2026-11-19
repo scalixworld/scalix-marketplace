@@ -1,0 +1,408 @@
+{
+  "generated_at": "2026-11-19T11:07:13.718Z",
+  "count": 16,
+  "listings": [
+    {
+      "id": "github",
+      "kind": "mcp",
+      "name": "GitHub",
+      "summary": "Official GitHub MCP server for repositories, issues, pull requests, Actions, code scanning, and Copilot over one authenticated endpoint.",
+      "author": "GitHub",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "development",
+        "vcs"
+      ],
+      "tags": [
+        "github",
+        "git",
+        "pull-requests",
+        "issues",
+        "actions"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-cloud",
+      "kind": "mcp",
+      "name": "Scalix Cloud",
+      "summary": "Provisions and manages Scalix Cloud resources including isolated sandboxes, persistent Linux computers, serverless PostgreSQL, functions, object storage, and AI inference.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.6.0",
+      "featured": true,
+      "categories": [
+        "cloud",
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "cloud",
+        "postgres",
+        "sandboxes",
+        "functions",
+        "ai"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "bug-triager",
+      "kind": "subagent",
+      "name": "Bug Triager",
+      "summary": "Reproduces and narrows a reported bug before code changes: minimal repro, bisected root cause, and ranked hypotheses with evidence.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "development",
+        "debugging"
+      ],
+      "tags": [
+        "scalix",
+        "debugging",
+        "triage",
+        "repro"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "chrome-devtools",
+      "kind": "mcp",
+      "name": "Chrome DevTools",
+      "summary": "Drive and inspect a live Chrome browser from the agent: traces, performance profiles, console logs, and network requests.",
+      "author": "Google",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "browser",
+        "devtools"
+      ],
+      "tags": [
+        "chrome",
+        "devtools",
+        "performance",
+        "debugging"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "code-reviewer",
+      "kind": "subagent",
+      "name": "Code Reviewer",
+      "summary": "Reviews a diff like a skeptical staff engineer: correctness first, blast radius second, style last, with every finding cited to file and line.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "development",
+        "quality"
+      ],
+      "tags": [
+        "scalix",
+        "review",
+        "quality",
+        "correctness"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "context7",
+      "kind": "mcp",
+      "name": "Context7",
+      "summary": "Up-to-date documentation for any library, pulled straight from the source repo into the agent's context.",
+      "author": "Upstash",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "documentation"
+      ],
+      "tags": [
+        "docs",
+        "libraries",
+        "upstash"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "deepwiki",
+      "kind": "mcp",
+      "name": "DeepWiki",
+      "summary": "Free, no-authentication wiki and Q&A over any public GitHub repository with repo structure, docs, and grounded answers.",
+      "author": "Cognition (Devin)",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "documentation",
+        "research"
+      ],
+      "tags": [
+        "wiki",
+        "documentation",
+        "github",
+        "research"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "playwright",
+      "kind": "mcp",
+      "name": "Playwright MCP",
+      "summary": "Automate browsers through Playwright's accessibility tree to navigate pages, fill forms, and run end-to-end checks.",
+      "author": "Microsoft",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "testing",
+        "browser"
+      ],
+      "tags": [
+        "playwright",
+        "browser",
+        "automation",
+        "e2e"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "pre-merge-security-review",
+      "kind": "rule",
+      "name": "Pre-Merge Security Review",
+      "summary": "Pre-PR security checklist covering credentials, untrusted input, SSRF, path traversal, supply-chain licenses, and production deploy gates.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "development",
+        "security"
+      ],
+      "tags": [
+        "scalix",
+        "security",
+        "review",
+        "checklist"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-ai",
+      "kind": "skill",
+      "name": "scalix-ai",
+      "summary": "Run AI inference on Scalix Cloud through the OpenAI-compatible API: chat completions, streaming, embeddings, image generation, speech, transcription, RAG, and web research across the public multi-vendor Scalix AI model catalog. Use when the user wants LLM inference on Scalix, asks about Scalix AI or its model catalog, or wants to point existing OpenAI-compatible code at Scalix.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.6.0",
+      "featured": false,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "ai"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-coding-standards",
+      "kind": "rule",
+      "name": "Scalix Coding Standards",
+      "summary": "House engineering standards for agent-written code in Scalix repositories: verify against real code, no em dashes, no fabricated metrics, and client-side security parity.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "standards",
+        "house-style",
+        "security"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-database",
+      "kind": "skill",
+      "name": "scalix-database",
+      "summary": "Provision and use ScalixNova, Scalix Cloud's serverless PostgreSQL: create databases, choose Postgres versions, run SQL, and use branching, point-in-time recovery, and isolation tiers. Use when the user wants a Postgres database on Scalix, asks about ScalixNova, database branching, PITR, or pgvector on Scalix.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.6.0",
+      "featured": false,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "database"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-functions",
+      "kind": "skill",
+      "name": "scalix-functions",
+      "summary": "Deploy and invoke serverless functions on Scalix Cloud across Node and Python runtimes, source or container-image deploys, invocation, and scaling behaviour. Use when the user wants to deploy a function, API endpoint, or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold starts.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.6.0",
+      "featured": false,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "functions"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "scalix-platform",
+      "kind": "skill",
+      "name": "scalix-platform",
+      "summary": "Connect to and operate Scalix Cloud through the remote MCP endpoint, the plain-HTTP tool surface, and the CLI. Use when the user wants to set up Scalix, connect an agent or MCP client to Scalix Cloud, list available platform tools, or asks how Scalix auth and API keys work.",
+      "author": "Scalix World",
+      "trust": "official",
+      "install_count": 0,
+      "version": "1.6.0",
+      "featured": false,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "scalix",
+        "platform"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "sentry",
+      "kind": "mcp",
+      "name": "Sentry",
+      "summary": "Search errors, triage issues, inspect traces, and read logs from Sentry directly inside your coding agent.",
+      "author": "Sentry",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "observability"
+      ],
+      "tags": [
+        "sentry",
+        "errors",
+        "monitoring",
+        "debugging"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    },
+    {
+      "id": "sequential-thinking",
+      "kind": "mcp",
+      "name": "Sequential Thinking",
+      "summary": "Structured step-by-step problem solving that lets an agent plan, branch, and revise before committing to an answer.",
+      "author": "Model Context Protocol",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "development",
+        "reasoning"
+      ],
+      "tags": [
+        "reasoning",
+        "planning",
+        "reference-server"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ]
+    }
+  ]
+}

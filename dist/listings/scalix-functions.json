@@ -1,0 +1,36 @@
+{
+  "id": "scalix-functions",
+  "kind": "skill",
+  "name": "scalix-functions",
+  "summary": "Deploy and invoke serverless functions on Scalix Cloud across Node and Python runtimes, source or container-image deploys, invocation, and scaling behaviour. Use when the user wants to deploy a function, API endpoint, or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold starts.",
+  "description": "Deploy and invoke serverless functions on Scalix Cloud across Node and Python runtimes, source or container-image deploys, invocation, and scaling behaviour. Use when the user wants to deploy a function, API endpoint, or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold starts.",
+  "author": "Scalix World",
+  "homepage_url": "",
+  "icon_url": "",
+  "trust": "official",
+  "install_count": 0,
+  "version": "1.6.0",
+  "featured": false,
+  "categories": [
+    "development"
+  ],
+  "tags": [
+    "scalix",
+    "functions"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "skill",
+    "name": "scalix-functions",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: scalix-functions\ndescription: \"Deploy and invoke serverless functions on Scalix Cloud across Node and Python runtimes, source or container-image deploys, invocation, and scaling behaviour. Use when the user wants to deploy a function, API endpoint, or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold starts.\"\nmetadata:\n  author: Scalix World\n  version: 1.6.0\n  trust: official\n  categories:\n    - development\n  tags:\n    - scalix\n    - functions\n  surfaces:\n    - coder\n    - ide\n    - editor\n  source:\n    repository: scalixworld/scalix-cloud-mcp\n---\n\n\n# Scalix Functions\n\nServerless functions that scale to zero when idle. A cold start provisions an isolated environment, so the first invocation after idle is meaningfully slower than a warm one — for latency-sensitive endpoints, keep the function warm with regular traffic.\n\n## Runtimes — the rule that prevents wasted work\n\nSupported runtimes are **`node` and `python` only**. Do not attempt to deploy Go, Rust, Ruby, or anything else as a function runtime — for other languages, package a container image instead (`--image`).\n\n## Write a handler\n\n```typescript\n// handler.ts\nexport default async function handler(req: Request) {\n  const body = await req.json();\n  return new Response(JSON.stringify({ result: body.x + body.y }), {\n    headers: { \"Content-Type\": \"application/json\" },\n  });\n}\n```\n\n## Deploy\n\n`fn deploy` requires either `--source <path>` or `--image <image>`:\n\n```bash\nscalix-cloud fn deploy api --source ./api --runtime node    # from source\nscalix-cloud fn deploy api --image registry/img:v1          # from a container image\n```\n\n## Invoke and manage\n\n```bash\nscalix-cloud fn list\nscalix-cloud fn invoke api --data '{\"x\": 1, \"y\": 2}'\nscalix-cloud fn delete <function-id>\n```\n\nThe same operations exist over REST (`POST https://api.scalix.world/v1/functions`) and as MCP tools — prefer MCP tools when this plugin's server is connected.\n\nFull reference: https://docs.scalix.world/functions\n"
+      }
+    ]
+  }
+}

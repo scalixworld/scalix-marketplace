@@ -1,0 +1,34 @@
+{
+  "id": "sentry",
+  "kind": "mcp",
+  "name": "Sentry",
+  "summary": "Search errors, triage issues, inspect traces, and read logs from Sentry directly inside your coding agent.",
+  "description": "Sentry's hosted MCP server over Streamable HTTP (https://mcp.sentry.dev/mcp). Built for coding agents: error search, issue triage, performance traces and log access. Connects via OAuth, or with a Sentry auth token in clients that send a custom Authorization header.",
+  "author": "Sentry",
+  "homepage_url": "https://github.com/getsentry/sentry-mcp",
+  "icon_url": "",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "observability"
+  ],
+  "tags": [
+    "sentry",
+    "errors",
+    "monitoring",
+    "debugging"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "sentry",
+    "serverUrl": "https://mcp.sentry.dev/mcp"
+  }
+}

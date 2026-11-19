@@ -1,0 +1,34 @@
+{
+  "id": "pre-merge-security-review",
+  "kind": "rule",
+  "name": "Pre-Merge Security Review",
+  "summary": "Pre-PR security checklist covering credentials, untrusted input, SSRF, path traversal, supply-chain licenses, and production deploy gates.",
+  "description": "A structured security review checklist for pull requests. Covers credential handling, input validation, SSRF and traversal guards, dependency licensing, and safe production deployment practices.",
+  "author": "Scalix World",
+  "homepage_url": "",
+  "icon_url": "",
+  "trust": "official",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "development",
+    "security"
+  ],
+  "tags": [
+    "scalix",
+    "security",
+    "review",
+    "checklist"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "rule",
+    "fileName": "pre-merge-security-review.md",
+    "content": "\n# Pre-Merge Security Review\n\nRun this checklist on any PR that touches network-facing code, auth, installers, build config or dependencies.\n\n## Secrets and credentials\n\n- No credential material in source, fixtures, tests, docs or CI logs. Env-var NAMES are fine; values are not.\n- Local secret files stay outside the repository (e.g. a dedicated uncommitted secrets directory or secret manager), referenced by path or env var only.\n- Error messages and logs never echo a credential value or a full request URL with userinfo.\n\n## Untrusted input\n\n- Server-returned payloads are validated again on the client: paths (no leading `/`, no `\\`, no `..`, bounded segments), hostnames (https only, no loopback or RFC1918/link-local/metadata targets), payload shape and size caps.\n- New file-writing paths resolve the target and assert containment under the intended directory.\n- Shell execution: reject bare paths and metacharacters; require an explicit user confirmation for locally spawned processes.\n\n## Supply chain\n\n- New server/runtime dependencies carry an OSI-approved license (permissive preferred); no RSALv2/SSPL-only Redis-lineage images, no floating `latest` pins.\n- Dependency bumps state why; check the upstream changelog for behavior changes, not just version drift.\n\n## Deploy posture\n\n- Never hand-build on a production host. If CI is down, fix CI.\n- Deploy only through the repository's scripted release pipeline, never by hand-editing files on production hosts.\n- Database migrations and host-level changes stay reversible: forward-only SQL with a documented rollback path and explicit rollout verification.\n\n## Reporting\n\n- Every finding cites file and line. Anything you could not verify is labelled unverified instead of softened."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "scalix-platform",
+  "kind": "skill",
+  "name": "scalix-platform",
+  "summary": "Connect to and operate Scalix Cloud through the remote MCP endpoint, the plain-HTTP tool surface, and the CLI. Use when the user wants to set up Scalix, connect an agent or MCP client to Scalix Cloud, list available platform tools, or asks how Scalix auth and API keys work.",
+  "description": "Connect to and operate Scalix Cloud through the remote MCP endpoint, the plain-HTTP tool surface, and the CLI. Use when the user wants to set up Scalix, connect an agent or MCP client to Scalix Cloud, list available platform tools, or asks how Scalix auth and API keys work.",
+  "author": "Scalix World",
+  "homepage_url": "",
+  "icon_url": "",
+  "trust": "official",
+  "install_count": 0,
+  "version": "1.6.0",
+  "featured": false,
+  "categories": [
+    "development"
+  ],
+  "tags": [
+    "scalix",
+    "platform"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "skill",
+    "name": "scalix-platform",
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: scalix-platform\ndescription: \"Connect to and operate Scalix Cloud through the remote MCP endpoint, the plain-HTTP tool surface, and the CLI. Use when the user wants to set up Scalix, connect an agent or MCP client to Scalix Cloud, list available platform tools, or asks how Scalix auth and API keys work.\"\nmetadata:\n  author: Scalix World\n  version: 1.6.0\n  trust: official\n  categories:\n    - development\n  tags:\n    - scalix\n    - platform\n  surfaces:\n    - coder\n    - ide\n    - editor\n  source:\n    repository: scalixworld/scalix-cloud-mcp\n---\n\n\n# Operate Scalix Cloud\n\nScalix Cloud is an agent-operable cloud platform: databases, AI inference, functions, computers, storage, KV, auth, and billing behind one API with one token. Everything a human does in the console is available to an agent as tools.\n\n## Authentication\n\nOne API key covers the whole platform. The user creates it in the console at https://console.scalix.world/org/keys (a Full Access Key has prefix `scalix_at_`; keys can be pinned to a project), then:\n\n```bash\nexport SCALIX_API_KEY=scalix_at_...\n```\n\nAll API calls use `Authorization: Bearer $SCALIX_API_KEY`. Never print, log, or commit the key. If a call returns `401`, the key is missing or invalid — ask the user to check the env var before debugging anything else.\n\n## MCP endpoint\n\nThis plugin ships the MCP server config (`.mcp.json`), pointing at the hosted endpoint:\n\n- **Endpoint**: `https://api.scalix.world/v1/mcp` (JSON-RPC 2.0 over HTTP)\n- **Discovery is open, actions are authenticated**: `initialize`, `tools/list`, and `resources/list` work without credentials; `tools/call` requires the Bearer key.\n- 53 tools across 16 families, measured live (`db 9 · computer 9 · storage 6 · run 5 · crew 3 · domain 3 · fn 3 · kv 3 · ai 2 · build 2 · events 2 · project 2 · auth 1 · cron 1 · sandbox 1 · status 1`). Counts move with deploy gates: `scalix_search` and `scalix_usage` are withheld when their flags are off, and the computer/crew families appear only when `SCALIX_COMPUTERS_ENABLED` / `SCALIX_CREW_ENABLED` are on. Do not quote a fixed number in public material — measure it with `tools/list` (the org repo's `ops/tools/registry-health.py` guards the registry description against the live count). Every tool call runs with the permissions, metering, and audit trail of the API key that makes it.\n\nPrefer the MCP tools for platform operations (provisioning, deploys, listing resources) — they are the same control plane as the console.\n\n## Plain-HTTP tool surface\n\nWhen no MCP client is available, the same tools are callable over plain HTTP. Unlike the MCP handshake, **the plain-HTTP surface requires auth on every call, including the tool listing**:\n\n```bash\ncurl https://api.scalix.world/api/v1/mcp \\\n  -H \"Authorization: Bearer $SCALIX_API_KEY\"                 # list tools\ncurl -X POST https://api.scalix.world/api/v1/mcp/call \\\n  -H \"Authorization: Bearer $SCALIX_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\": \"<tool-name>\", \"arguments\": { ... }}'\n```\n\nFor a credential-free connectivity check, use the open MCP discovery instead:\n\n```bash\ncurl -X POST https://api.scalix.world/v1/mcp \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'        # 53 tools, no auth (measure; gates move it)\n```\n\n## CLI\n\nThe CLI is a native binary named `scalix-cloud`:\n\n```bash\nnpm install -g scalix-cloud     # or: brew install scalixworld/tap/scalix-cloud\nscalix-cloud login              # authenticate with the API key\nscalix-cloud whoami             # verify identity\n```\n\nCommand groups: `db`, `fn`, `storage`, `kv`, `ai`. It does not self-update; update with `npm update -g scalix-cloud`.\n\n## SDKs\n\n- TypeScript/JavaScript: `npm install @scalix-world/sdk`\n- Python: `pip install scalix-sdk`\n\nBoth are generated from the platform OpenAPI spec and cover every service with the same single token.\n\n## Ground rules\n\n- Full documentation lives at https://docs.scalix.world — link users there rather than guessing at behaviour not covered here.\n- For pricing questions, point to the live pricing pages on https://scalix.world — never quote figures from memory.\n"
+      }
+    ]
+  }
+}
