@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -34,16 +35,13 @@ const pkgVersion = JSON.parse(fs.readFileSync(path.join(from, 'package.json'), '
 const version = arg('--version', pkgVersion);
 
 function splitFrontmatter(text) {
-  if (!text.startsWith('---')) throw new Error('SKILL.md must start with a --- frontmatter block');
-  const parts = text.split('---');
-  // parts: ['', '\nname: ...\n', '\nbody...']
-  if (parts.length < 3) throw new Error('SKILL.md frontmatter not terminated');
-  return { frontmatter: parts[1], body: parts.slice(2).join('---') };
-}
-
-function scalarField(frontmatter, key) {
-  const m = frontmatter.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'));
-  return m ? m[1].trim() : '';
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!match) throw new Error('SKILL.md must start with a terminated --- frontmatter block');
+  const data = parseYaml(match[1]);
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error('SKILL.md frontmatter must be a YAML mapping');
+  }
+  return { frontmatter: match[1], body: text.slice(match[0].length), data };
 }
 
 function metadataBlockOf(frontmatter) {
@@ -58,10 +56,6 @@ function metadataBlockOf(frontmatter) {
     block.push(line);
   }
   return block.join('\n');
-}
-
-function yamlScalar(v) {
-  return /^[-A-Za-z0-9_./ ]+$/.test(v) && !/^\s|\s$/.test(v) && !/[:,#]/.test(v) ? v : JSON.stringify(v);
 }
 
 function defaultMetadata(name) {
@@ -88,9 +82,9 @@ let synced = 0;
 for (const dir of fs.readdirSync(skillsSrc, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name).sort()) {
   const srcFile = path.join(skillsSrc, dir, 'SKILL.md');
   if (!fs.existsSync(srcFile)) continue;
-  const { frontmatter, body } = splitFrontmatter(fs.readFileSync(srcFile, 'utf-8'));
-  const name = scalarField(frontmatter, 'name');
-  const description = scalarField(frontmatter, 'description');
+  const { body, data } = splitFrontmatter(fs.readFileSync(srcFile, 'utf-8'));
+  const name = typeof data.name === 'string' ? data.name : '';
+  const description = typeof data.description === 'string' ? data.description : '';
   if (!name || !description) {
     console.error(`${srcFile}: missing name/description frontmatter`);
     process.exit(1);
@@ -109,8 +103,7 @@ for (const dir of fs.readdirSync(skillsSrc, { withFileTypes: true }).filter(d =>
 
   const out =
     '---\n' +
-    `name: ${name}\n` +
-    `description: ${yamlScalar(description)}\n` +
+    stringifyYaml({ name, description }) +
     'metadata:\n' +
     (existingMeta ?? defaultMetadata(name)) +
     '\n---\n' +

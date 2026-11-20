@@ -36,11 +36,11 @@ This repo is a curated, Git-backed catalog. There is no submission endpoint and 
 4. Payloads:
 
    - **MCP (http):** `payload.transport: http`, `serverUrl` must be `https://` on a public host, `serverLabel` 2 to 128 chars, optional `authorizationEnv` / `requiredEnv` (env-var NAMES only, `^[A-Z][A-Z0-9_]{0,63}$`) and `headers` (max 16, token-shaped keys).
-   - **MCP (stdio):** `payload.transport: stdio`, `command` a bare name (no `/`, `\`, `..`; `^[A-Za-z0-9._@-]{1,64}$`), optional `args` (<= 20 entries, <= 512 chars each). Clients require explicit user confirmation before installing a stdio server.
-   - **Skill:** `SKILL.md` is required at the skill root; total <= 10 files, <= 256 KB each, <= 1 MB overall; paths must be safe relative paths (no leading `/`, no `\`, no `..`, <= 6 segments).
+   - **MCP (stdio):** `payload.transport: stdio`, `command` a bare name (no `/`, `\`, `..`; `^[A-Za-z0-9._@-]{1,64}$`), optional `args` (<= 20 entries, <= 512 UTF-8 bytes each). Every npm package run through `npx` must have an exact SemVer pin such as `@scope/package@1.2.3`; `latest`, tags, ranges, and unversioned packages are rejected. HTTP-only `authorizationEnv` and `headers` are not valid on stdio. Clients require explicit user confirmation before installing a stdio server.
+   - **Skill:** frontmatter `name` is required and must be the 2 to 64 character kebab-case directory ID. `SKILL.md` is required at the skill root; total <= 10 files, <= 256 KB each, <= 1 MB overall; paths must be safe relative paths (no leading `/`, no `\`, no `..`, <= 6 segments).
    - **Rule / Subagent:** the markdown body after the frontmatter becomes `payload.content`; the file name becomes `payload.fileName` (`<id>.md`).
 
-5. Never put credential VALUES anywhere in this repo; env-var names and `Bearer $ENV_VAR` references are the only allowed form. The generator scans every payload and fails the build on credential-shaped strings.
+5. Never put credential VALUES anywhere in this repo; env-var names and `Bearer $ENV_VAR` references are the only allowed form. The generator scans metadata and every payload and fails the build on credential-shaped strings. Public URLs are screened statically and through DNS: resolution failure, an empty answer, or any private/special-use address fails validation. Clients repeat the check and pin the live connection to the validated addresses.
 
 6. Regenerate and validate:
 

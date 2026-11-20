@@ -10,6 +10,8 @@ import {
   isPlainRecord,
   isPublicHttpsUrl,
   looksLikeSecret,
+  validateCatalogDns,
+  type CatalogDnsLookup,
   type ListingDetail,
 } from './generate-catalog.js';
 
@@ -53,6 +55,8 @@ export interface ReviewOptions {
   aiBaseUrl?: string;
   aiModel?: string;
   checkAll?: boolean;
+  /** Test seam for deterministic DNS policy checks; production uses dns.lookup. */
+  dnsLookup?: CatalogDnsLookup;
 }
 
 export const BOT_MARKER = '<!-- scalix-review-bot -->';
@@ -353,6 +357,19 @@ export function checkCatalogDrift(repoRoot: string, details: ListingDetail[]): R
   return findings;
 }
 
+function shellQuote(value: string): string {
+  return `'${value.replace(/'/g, `'"'"'`)}'`;
+}
+
+function inlineCode(value: string): string {
+  return `\`${value.replace(/`/g, '%60')}\``;
+}
+
+function normalizedPublicUrl(value: unknown): string | null {
+  if (typeof value !== 'string' || !isPublicHttpsUrl(value)) return null;
+  return new URL(value).href;
+}
+
 export function buildMaintainerChecks(repoRoot: string, changedFiles: string[]): string[] {
   const checks: string[] = [];
   const seen = new Set<string>();
@@ -371,23 +388,28 @@ export function buildMaintainerChecks(repoRoot: string, changedFiles: string[]):
     if (!parsed) continue;
     const { kind, doc } = parsed;
     const meta = isPlainRecord(doc.metadata) ? doc.metadata : {};
-    const homepage = kind === 'skill' ? meta.homepage_url : doc.homepage_url;
-    if (typeof homepage === 'string') {
-      const ghMatch = homepage.match(/^https:\/\/github\.com\/([^/]+\/[^/#?]+)/);
+    const homepage = normalizedPublicUrl(kind === 'skill' ? meta.homepage_url : doc.homepage_url);
+    if (homepage) {
+      const ghMatch = homepage.match(/^https:\/\/github\.com\/([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)(?:[/?#]|$)/);
       if (ghMatch) {
-        add(`Verify upstream repo (\`${relFile}\`): \`gh api repos/${ghMatch[1].replace(/\.git$/, '')}\``);
-      } else if (homepage.startsWith('https://')) {
-        add(`Verify homepage (\`${relFile}\`): \`curl -fsSI ${homepage}\``);
+        add(`Verify upstream repo (\`${relFile}\`): ${inlineCode(`gh api repos/${ghMatch[1].replace(/\.git$/, '')}`)}`);
+      } else {
+        add(`Verify homepage (\`${relFile}\`): ${inlineCode(`curl -fsSI ${shellQuote(homepage)}`)}`);
       }
     }
     if (kind === 'mcp' && isPlainRecord(doc.payload)) {
-      if (doc.payload.transport === 'http' && typeof doc.payload.serverUrl === 'string') {
+      const serverUrl = normalizedPublicUrl(doc.payload.serverUrl);
+      if (doc.payload.transport === 'http' && serverUrl) {
         add(
-          `Probe MCP discovery (\`${relFile}\`): \`curl -sS -X POST ${doc.payload.serverUrl} -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'\``,
+          `Probe MCP discovery (\`${relFile}\`): ${inlineCode(`curl -sS -X POST ${shellQuote(serverUrl)} -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`)}`,
         );
-      } else if (doc.payload.transport === 'stdio' && typeof doc.payload.command === 'string') {
-        const args = Array.isArray(doc.payload.args) ? doc.payload.args.map(String).join(' ') : '';
-        add(`Inspect local stdio package ownership (\`${relFile}\`): \`${doc.payload.command}${args ? ` ${args}` : ''}\``);
+      } else if (doc.payload.transport === 'stdio' && doc.payload.command === 'npx' && Array.isArray(doc.payload.args)) {
+        const npmSpec = doc.payload.args.find(arg =>
+          typeof arg === 'string' && /^(?:@[a-z0-9._-]+\/[a-z0-9._-]+|[a-z0-9._-]+)@(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/i.test(arg),
+        );
+        if (npmSpec) {
+          add(`Inspect stdio package release (\`${relFile}\`): ${inlineCode(`npm view ${npmSpec} version dist.integrity --json`)}`);
+        }
       }
     }
   }
@@ -653,7 +675,14 @@ function dedupeFindings(findings: ReviewFinding[]): ReviewFinding[] {
 }
 
 function escapeCell(text: string): string {
-  return text.replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/@/g, '&#64;')
+    .replace(/`/g, '\\`')
+    .replace(/\|/g, '\\|')
+    .replace(/\r?\n/g, ' ');
 }
 
 export function formatReviewComment(report: Omit<ReviewReport, 'comment_markdown'>): string {
@@ -701,6 +730,12 @@ export function formatReviewComment(report: Omit<ReviewReport, 'comment_markdown
   return lines.join('\n');
 }
 
+function listingSourceFile(detail: ListingDetail): string {
+  if (detail.kind === 'mcp') return `mcps/${detail.id}/MCP.yaml`;
+  if (detail.kind === 'skill') return `skills/${detail.id}/SKILL.md`;
+  return `${detail.kind === 'rule' ? 'rules' : 'subagents'}/${detail.id}.md`;
+}
+
 export async function runReview(options: ReviewOptions): Promise<ReviewReport> {
   const repoRoot = path.resolve(options.repoRoot);
   const changedFiles = options.changedFiles ?? (options.checkAll ? listAllSourceFiles(repoRoot) : []);
@@ -709,6 +744,20 @@ export async function runReview(options: ReviewOptions): Promise<ReviewReport> {
   const { details, errors } = buildCatalog(repoRoot);
   for (const err of errors) {
     findings.push(mapBuildErrorToFinding(repoRoot, err));
+  }
+  if (errors.length === 0) {
+    const byId = new Map(details.map(detail => [detail.id, detail]));
+    for (const issue of await validateCatalogDns(details, options.dnsLookup)) {
+      const detail = byId.get(issue.id);
+      findings.push({
+        severity: 'CRITICAL',
+        file: detail ? listingSourceFile(detail) : 'catalog',
+        line: 1,
+        title: `${issue.field} fails DNS public-network validation`,
+        explanation: `${issue.reason}. Every DNS answer must be a public address; private, loopback, link-local, and special-use addresses are forbidden.`,
+        source: 'deterministic',
+      });
+    }
   }
 
   for (const relFile of changedFiles) {

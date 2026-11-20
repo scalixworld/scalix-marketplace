@@ -16,6 +16,7 @@ import {
   isBareCommand,
   isPublicHttpsUrl,
   isPrivateHost,
+  validatePublicHttpsUrlDns,
   looksLikeSecret,
   validateMcpPayload,
   validateSkillPayload,
@@ -60,10 +61,14 @@ test('versions', () => {
   assert.equal(isValidVersion('1.5.0'), true);
   assert.equal(isValidVersion('1.5.0-rc.1'), true);
   assert.equal(isValidVersion('1.5.0-alpha'), true);
+  assert.equal(isValidVersion('1.5.0+build.7'), true);
   assert.equal(isValidVersion('1.5'), false);
   assert.equal(isValidVersion('v1.5.0'), false);
   assert.equal(isValidVersion('1.5.0; DROP TABLE'), false);
   assert.equal(isValidVersion('1.5.0.1'), false);
+  for (const invalid of ['01.2.3', '1.0.0-', '1.0.0+', '1.0.0-rc_1', '1.0.0-rc..1', '1.0.0-01']) {
+    assert.equal(isValidVersion(invalid), false, `must reject non-SemVer ${invalid}`);
+  }
 });
 
 test('env names and commands', () => {
@@ -120,6 +125,8 @@ test('private hosts and public https urls (SSRF parity)', () => {
     'https://127.0.0.1/mcp',
     'https://127.0.0.2/mcp',
     'https://localhost/mcp',
+    'https://localhost./mcp',
+    'https://service.internal./mcp',
     'https://169.254.169.254/latest/meta-data',
     'https://10.0.0.5/mcp',
     'https://172.16.0.1/mcp',
@@ -131,6 +138,8 @@ test('private hosts and public https urls (SSRF parity)', () => {
     'https://[fc00::1]/mcp',
     'https://[fd12::1]/mcp',
     'https://[fe80::1]/mcp',
+    'https://[2001:db8::1]/mcp',
+    'https://[ff02::1]/mcp',
     'https://2130706433/mcp',
     'https://0x7f000001/mcp',
     'https://127.1/mcp',
@@ -161,10 +170,37 @@ test('private hosts and public https urls (SSRF parity)', () => {
   }
   assert.equal(isPrivateHost('metadata.google.internal'), true);
   assert.equal(isPrivateHost('instance-data'), true);
+  assert.equal(isPrivateHost('localhost.'), true);
+  assert.equal(isPrivateHost('8.8.8.8'), false);
+});
+
+test('DNS policy rejects private answers and fails closed without real network access', async () => {
+  const publicLookup = async () => [{ address: '8.8.8.8', family: 4 }];
+  assert.equal(await validatePublicHttpsUrlDns('https://example.com/mcp', publicLookup), null);
+
+  const privateLookup = async () => [
+    { address: '93.184.216.34', family: 4 },
+    { address: '127.0.0.1', family: 4 },
+  ];
+  assert.match(
+    (await validatePublicHttpsUrlDns('https://foo.127.0.0.1.nip.io/mcp', privateLookup)) ?? '',
+    /private or special-use/,
+  );
+  assert.match(
+    (await validatePublicHttpsUrlDns('https://example.com/mcp', async () => [])) ?? '',
+    /no addresses/,
+  );
+  assert.match(
+    (await validatePublicHttpsUrlDns('https://example.com/mcp', async () => { throw new Error('ENOTFOUND'); })) ?? '',
+    /DNS resolution failed/,
+  );
 });
 
 test('credential-shaped values are refused', () => {
   assert.equal(looksLikeSecret('sk-abcdefghijklmnop1234'), true);
+  assert.equal(looksLikeSecret('sk-proj-abcdefghijklmnop1234'), true);
+  assert.equal(looksLikeSecret('sk-ant-abcdefghijklmnop1234'), true);
+  assert.equal(looksLikeSecret('Basic dXNlcjpwYXNz'), true);
   assert.equal(looksLikeSecret('ghp_abcdefghijklmnopqrstuvwxyz0123456789'), true);
   assert.equal(looksLikeSecret('gho_abcdefghijklmnopqrstuvwxyz0123456789'), true);
   assert.equal(looksLikeSecret('Bearer abcdefghijklmnop1234'), true);
@@ -206,6 +242,8 @@ test('mcp payload validation', () => {
   assert.ok(validateMcpPayload({ ...validMcpPayload, authorizationEnv: 'lower_case' }).length > 0);
   assert.ok(validateMcpPayload({ ...validMcpPayload, requiredEnv: ['not-an-env'] }).length > 0);
   assert.ok(validateMcpPayload({ ...validMcpPayload, headers: { Authorization: 'Bearer sk-abcdefghijklmnop1234' } }).length > 0);
+  assert.ok(validateMcpPayload({ ...validMcpPayload, headers: { Authorization: 'Basic dXNlcjpwYXNz' } }).length > 0);
+  assert.ok(validateMcpPayload({ ...validMcpPayload, headers: { 'X-Key': 'sk-proj-abcdefghijklmnop1234' } }).length > 0);
   assert.ok(validateMcpPayload({ ...validMcpPayload, headers: { 'Bad Key': 'v' } }).length > 0);
   assert.ok(validateMcpPayload({ ...validMcpPayload, command: 'npx' }).length > 0);
   assert.ok(
@@ -239,11 +277,25 @@ test('mcp payload validation', () => {
       args: ['ok', '\u0000'],
     }).length > 0,
   );
+  for (const args of [['-y', '@scope/pkg'], ['-y', '@scope/pkg@latest'], ['-y', 'pkg@^1.2.3'], ['-y']]) {
+    assert.ok(
+      validateMcpPayload({ kind: 'mcp', transport: 'stdio', serverLabel: 'demo', command: 'npx', args }).some(error => error.includes('npm')),
+      `must reject mutable/missing npm package spec: ${args.join(' ')}`,
+    );
+  }
+  assert.ok(
+    validateMcpPayload({
+      kind: 'mcp', transport: 'stdio', serverLabel: 'demo', command: 'npx', args: ['-y', '@scope/pkg@1.2.3'],
+      authorizationEnv: 'DEMO_KEY', headers: { Authorization: 'Basic dXNlcjpwYXNz' },
+    }).some(error => error.includes('HTTP')),
+  );
 });
 
 test('skill payload validation', () => {
   const files = [{ path: 'SKILL.md', content: '# demo' }];
   assert.deepEqual(validateSkillPayload('demo', files), []);
+  assert.ok(validateSkillPayload('a', files).some(error => error.includes('2..=64')));
+  assert.ok(validateSkillPayload('../escape', files).length > 0);
   assert.ok(validateSkillPayload('demo', []).length > 0);
   assert.ok(validateSkillPayload('demo', [{ path: 'docs/x.md', content: 'x' }]).length > 0);
   assert.ok(validateSkillPayload('demo', [{ path: '../x.md', content: 'x' }]).length > 0);
@@ -333,6 +385,34 @@ test('malformed fixtures produce loud errors', () => {
     assert.ok(errors.some(e => e.includes('credential')), `expected secret refusal, got: ${errors.join(' | ')}`);
     assert.ok(errors.some(e => e.includes('id "BADID"') || e.includes('must match')), `expected id refusal, got: ${errors.join(' | ')}`);
     assert.ok(errors.some(e => e.includes('frontmatter')), `expected frontmatter refusal, got: ${errors.join(' | ')}`);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('catalog metadata cannot smuggle credentials into public JSON', () => {
+  const root = tmpDir();
+  try {
+    writeFixture(
+      root,
+      'mcps/leak/MCP.yaml',
+      `id: leak
+name: Leak
+summary: Demonstrates metadata validation for a hosted MCP integration.
+description: "sk-proj-abcdefghijklmnop1234"
+author: Example
+trust: community
+version: 1.0.0
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: leak
+  serverUrl: https://example.com/mcp
+`,
+    );
+    const { details, errors } = buildCatalog(root);
+    assert.equal(details.length, 0);
+    assert.ok(errors.some(error => error.includes('description looks like a credential')), errors.join(' | '));
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

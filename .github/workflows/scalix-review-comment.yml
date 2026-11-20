@@ -7,6 +7,7 @@ on:
 
 permissions:
   pull-requests: write
+  checks: write
   contents: read
 
 jobs:
@@ -93,6 +94,7 @@ jobs:
           IS_EXTERNAL: ${{ steps.pr.outputs.is_external }}
           SCALIX_REVIEW_BOT_API_KEY: ${{ secrets.SCALIX_REVIEW_BOT_API_KEY }}
           SCALIX_REVIEW_BOT_MODEL: ${{ vars.SCALIX_REVIEW_BOT_MODEL }}
+          SCALIX_AI_BASE_URL: ${{ vars.SCALIX_AI_BASE_URL }}
         run: |
           set -euo pipefail
           git -c core.hooksPath=/dev/null fetch --no-tags origin \
@@ -111,12 +113,90 @@ jobs:
           if [ "$IS_EXTERNAL" = "true" ]; then
             EXTRA_FLAGS="--external"
           fi
+          set +e
           pnpm exec tsx bin/review-pr.ts \
             --repo-root /tmp/pr-tree \
             --base "origin/${BASE_REF}" \
             --head "$HEAD_SHA" \
             $EXTRA_FLAGS \
-            --output .review-out/review-report.json || true
+            --output .review-out/review-report.json
+          REVIEW_EXIT=$?
+          set -e
+          export REVIEW_EXIT
+          if [ ! -f .review-out/review-report.json ]; then
+            node -e '
+              const fs = require("node:fs");
+              const finding = {
+                severity: "CRITICAL", file: "catalog", line: 1,
+                title: "Review runner failed closed",
+                explanation: `The review process exited with status ${process.env.REVIEW_EXIT} without a report. Inspect the workflow log and rerun before merging.`,
+                source: "deterministic",
+              };
+              const report = {
+                status: "fail", recommendation: "Address before merge",
+                counts: { critical: 1, warning: 0, suggestion: 0 },
+                ai_review_status: "error", ai_review_note: "Review runner failed before producing a report.",
+                findings: [finding], maintainer_checks: [], reviewed_files: [],
+                comment_markdown: `<!-- scalix-review-bot -->\n\n## Scalix Maintainer Review Summary\n\n**Status:** Review runner failed | **Recommendation:** Address before merge\n\n${finding.explanation}`,
+              };
+              fs.writeFileSync(".review-out/review-report.json", JSON.stringify(report));
+            '
+          fi
+
+      - name: Publish maintainer gate
+        if: steps.pr.outputs.found == 'true'
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const report = JSON.parse(fs.readFileSync('.review-out/review-report.json', 'utf8'));
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA;
+            if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[0-9a-f]{40}$/.test(headSha || '')) {
+              throw new Error('Invalid PR metadata for maintainer gate.');
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+            });
+            if (pr.state !== 'open' || pr.head.sha !== headSha) {
+              core.info('PR head moved or closed; skipping maintainer gate.');
+              return;
+            }
+            const findings = Array.isArray(report.findings) ? report.findings : [];
+            const passing = report.status === 'pass' && findings.length === 0;
+            const summary = typeof report.comment_markdown === 'string'
+              ? report.comment_markdown.slice(0, 65000)
+              : 'Review completed without a summary.';
+            const checkName = 'Scalix Maintainer Review';
+            const existingRuns = await github.paginate(github.rest.checks.listForRef, {
+              owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
+              check_name: checkName, per_page: 100,
+            });
+            const existing = existingRuns
+              .filter(run => run.app?.slug === 'github-actions')
+              .sort((a, b) => b.id - a.id)[0];
+            const payload = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: checkName,
+              head_sha: headSha,
+              status: 'completed',
+              conclusion: passing ? 'success' : 'failure',
+              completed_at: new Date().toISOString(),
+              output: {
+                title: passing ? 'Maintainer review passed' : 'Maintainer review requires changes',
+                summary,
+              },
+            };
+            if (existing) {
+              const { head_sha, ...updatePayload } = payload;
+              await github.rest.checks.update({ ...updatePayload, check_run_id: existing.id });
+            } else {
+              await github.rest.checks.create(payload);
+            }
 
       - name: Upsert PR review comment
         if: steps.pr.outputs.found == 'true'
@@ -127,54 +207,115 @@ jobs:
         with:
           script: |
             const fs = require('node:fs');
-            if (!fs.existsSync('.review-out/review-report.json')) {
-              core.info('Review report file not present; skipping comment.');
-              return;
-            }
             const report = JSON.parse(fs.readFileSync('.review-out/review-report.json', 'utf8'));
             const prNumber = Number(process.env.PR_NUMBER);
             const headSha = process.env.HEAD_SHA;
-            if (!Number.isInteger(prNumber) || prNumber <= 0 || !headSha) {
-              throw new Error(`Invalid PR metadata: prNumber=${prNumber}, headSha=${headSha}`);
+            if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[0-9a-f]{40}$/.test(headSha || '')) {
+              throw new Error('Invalid PR metadata for review comment.');
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+            });
+            if (pr.state !== 'open' || pr.head.sha !== headSha) {
+              core.info('PR head moved or closed; skipping summary comment.');
+              return;
+            }
+            const marker = '<!-- scalix-review-bot -->';
+            let body = typeof report.comment_markdown === 'string' ? report.comment_markdown.trim() : '';
+            if (!body.startsWith(marker)) throw new Error('Unexpected review summary payload.');
+            if (body.length > 65000) body = `${body.slice(0, 64900)}\n\n… truncated by scalix-review-bot …`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, per_page: 100,
+            });
+            const existing = comments.find(comment =>
+              comment.user?.login === 'github-actions[bot]' &&
+              typeof comment.body === 'string' && comment.body.startsWith(marker)
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: existing.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, body,
+              });
             }
 
+      - name: Post idempotent inline findings
+        if: steps.pr.outputs.found == 'true'
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const report = JSON.parse(fs.readFileSync('.review-out/review-report.json', 'utf8'));
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA;
             const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
+            });
+            if (pr.state !== 'open' || pr.head.sha !== headSha) {
+              core.info('PR head moved or closed; skipping inline findings.');
+              return;
+            }
+            const marker = `<!-- scalix-review-bot-inline:${headSha} -->`;
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              pull_number: prNumber, per_page: 100,
+            });
+            if (reviews.some(review => review.user?.login === 'github-actions[bot]' && review.body?.includes(marker))) {
+              core.info('Inline findings already exist for this head SHA.');
+              return;
+            }
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              pull_number: prNumber, per_page: 100,
+            });
+            const rightLines = (patch) => {
+              const lines = new Set();
+              let current = 0;
+              for (const row of String(patch || '').split(/\r?\n/)) {
+                const hunk = row.match(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/);
+                if (hunk) { current = Number(hunk[1]); continue; }
+                if (!current || row.startsWith('-') || row.startsWith('\\')) continue;
+                if (row.startsWith('+') || row.startsWith(' ')) lines.add(current);
+                if (!row.startsWith('diff ') && !row.startsWith('index ')) current += 1;
+              }
+              return lines;
+            };
+            const diffByFile = new Map(files.map(file => [file.filename, rightLines(file.patch)]));
+            const allowed = new Set(['CRITICAL', 'WARNING', 'SUGGESTION']);
+            const clean = (value, cap) => String(value)
+              .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '')
+              .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/@/g, '&#64;')
+              .slice(0, cap);
+            const comments = (Array.isArray(report.findings) ? report.findings : [])
+              .filter(finding => finding && allowed.has(finding.severity) &&
+                typeof finding.file === 'string' && Number.isInteger(finding.line) &&
+                typeof finding.title === 'string' && typeof finding.explanation === 'string' &&
+                diffByFile.get(finding.file)?.has(finding.line))
+              .slice(0, 50)
+              .map(finding => ({
+                path: finding.file,
+                line: finding.line,
+                side: 'RIGHT',
+                body: `**${finding.severity}: ${clean(finding.title, 200)}**\n\n${clean(finding.explanation, 4000)}`,
+              }));
+            if (!comments.length) {
+              core.info('No findings map to valid RIGHT-side diff lines.');
+              return;
+            }
+            await github.rest.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
+              commit_id: headSha,
+              event: 'COMMENT',
+              body: `${marker}\nAutomated findings for ${headSha}. The summary comment contains any findings that cannot be anchored to this diff.`,
+              comments,
             });
-            if (pr.head.sha !== headSha) {
-              core.info(`PR #${prNumber} head SHA moved (${pr.head.sha} != ${headSha}); skipping comment.`);
-              return;
-            }
-
-            const body = typeof report.comment_markdown === 'string' ? report.comment_markdown.trim() : '';
-            const marker = '<!-- scalix-review-bot -->';
-            if (!body.startsWith(marker)) {
-              throw new Error('Unexpected review-report.json comment_markdown payload.');
-            }
-
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 100,
-            });
-            const existing = comments.find(c => typeof c.body === 'string' && c.body.includes(marker));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-              core.info(`Updated comment ${existing.id} on PR #${prNumber}`);
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body,
-              });
-              core.info(`Created review comment on PR #${prNumber}`);
-            }

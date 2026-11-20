@@ -3,7 +3,7 @@
   "kind": "mcp",
   "name": "Playwright MCP",
   "summary": "Automate browsers through Playwright's accessibility tree to navigate pages, fill forms, and run end-to-end checks.",
-  "description": "Microsoft's Playwright MCP server, spawned locally via npx (@playwright/mcp@latest). Interacts with pages through structured accessibility snapshots, so no vision model is needed. Runs a real browser locally, so the client asks for explicit confirmation before installing a stdio server.",
+  "description": "Microsoft's Playwright MCP server, spawned locally via npx (@playwright/mcp@0.0.86). Interacts with pages through structured accessibility snapshots, so no vision model is needed. Runs a real browser locally, so the client asks for explicit confirmation before installing a stdio server.",
   "author": "Microsoft",
   "homepage_url": "https://github.com/microsoft/playwright-mcp",
   "icon_url": "",
@@ -32,7 +32,8 @@
     "serverLabel": "playwright",
     "command": "npx",
     "args": [
-      "@playwright/mcp@latest"
+      "-y",
+      "@playwright/mcp@0.0.86"
     ]
   }
 }

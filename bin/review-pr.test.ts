@@ -95,6 +95,7 @@ test('flags SSRF and insecure MCP serverUrl values as CRITICAL', () => {
   for (const badUrl of [
     'http://169.254.169.254/latest/meta-data',
     'http://localhost:3000/mcp',
+    'https://localhost./mcp',
     'https://10.0.0.1/mcp',
   ]) {
     const bad = VALID_MCP_YAML.replace('https://mcp.demo.example/v1/mcp', badUrl);
@@ -172,13 +173,14 @@ payload:
   command: npx
   args:
     - "-y"
-    - "@demo/mcp"
+    - "@demo/mcp@1.2.3"
 `,
     );
     const checks = buildMaintainerChecks(root, ['mcps/demo-cloud/MCP.yaml', 'mcps/local-tool/MCP.yaml']);
     assert.ok(checks.some(c => c.includes('gh api repos/demo/demo-mcp')));
     assert.ok(checks.some(c => c.includes('tools/list') && c.includes('https://mcp.demo.example/v1/mcp')));
-    assert.ok(checks.some(c => c.includes('npx -y @demo/mcp')));
+    assert.ok(checks.some(c => c.includes('npm view @demo/mcp@1.2.3 version dist.integrity --json')));
+    assert.ok(checks.every(c => !c.includes('npx -y')));
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -272,9 +274,28 @@ test('real catalog in this repo passes full scalix-review-bot audit with zero fi
     repoRoot: REPO_ROOT,
     checkAll: true,
     skipAi: true,
+    dnsLookup: async () => [{ address: '8.8.8.8', family: 4 }],
   });
   assert.deepEqual(report.findings, [], `unexpected findings: ${JSON.stringify(report.findings, null, 2)}`);
   assert.equal(report.status, 'pass');
   assert.equal(report.recommendation, 'Merge');
   assert.ok(report.reviewed_files.length >= 16);
+});
+
+test('runReview blocks a public hostname when any DNS answer is private', async () => {
+  const report = await runReview({
+    repoRoot: REPO_ROOT,
+    checkAll: true,
+    skipAi: true,
+    dnsLookup: async hostname => [{
+      address: hostname === 'mcp.context7.com' ? '127.0.0.1' : '8.8.8.8',
+      family: 4,
+    }],
+  });
+  assert.equal(report.status, 'fail');
+  assert.ok(report.findings.some(finding =>
+    finding.severity === 'CRITICAL' &&
+    finding.file === 'mcps/context7/MCP.yaml' &&
+    finding.title.includes('DNS public-network')
+  ));
 });

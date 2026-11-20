@@ -27,8 +27,10 @@ jobs:
       - name: Compile the catalog (dist/listings)
         run: pnpm run generate
 
-      - name: Verify dist/listings is up to date
-        run: git diff --exit-code dist/listings
+      - name: Verify dist/listings is up to date (tracked and untracked files)
+        run: |
+          git status --short --untracked-files=all -- dist/listings
+          test -z "$(git status --porcelain=v1 --untracked-files=all -- dist/listings)"
 
       - name: Validate the catalog (mirrors the client parsers)
         run: pnpm test

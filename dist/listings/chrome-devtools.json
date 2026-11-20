@@ -3,7 +3,7 @@
   "kind": "mcp",
   "name": "Chrome DevTools",
   "summary": "Drive and inspect a live Chrome browser from the agent: traces, performance profiles, console logs, and network requests.",
-  "description": "Google's Chrome DevTools MCP server, spawned locally via npx (chrome-devtools-mcp@latest). Gives coding agents the full DevTools surface over MCP: navigate, inspect, profile performance and read console/network. Runs a real browser locally, so the client asks for explicit confirmation before installing a stdio server.",
+  "description": "Google's Chrome DevTools MCP server, spawned locally via npx (chrome-devtools-mcp@1.13.0). Gives coding agents the full DevTools surface over MCP: navigate, inspect, profile performance and read console/network. Runs a real browser locally, so the client asks for explicit confirmation before installing a stdio server.",
   "author": "Google",
   "homepage_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
   "icon_url": "",
@@ -33,7 +33,7 @@
     "command": "npx",
     "args": [
       "-y",
-      "chrome-devtools-mcp@latest"
+      "chrome-devtools-mcp@1.13.0"
     ]
   }
 }

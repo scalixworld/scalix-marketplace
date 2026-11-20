@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import dns, { type LookupAddress } from 'node:dns';
+import net from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 
@@ -12,7 +14,9 @@ export const SURFACES = ['coder', 'ide', 'editor'] as const;
 export type Surface = (typeof SURFACES)[number];
 
 export const LISTING_ID_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
-export const VERSION_RE = /^[0-9]+\.[0-9]+\.[0-9]+([-+][A-Za-z0-9.-_]{0,32})?$/;
+// Semantic Versioning 2.0.0, including the no-leading-zero rules for core and
+// numeric pre-release identifiers. Keep client telemetry validation in sync.
+export const VERSION_RE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
 export const ENV_RE = /^[A-Z][A-Z0-9_]{0,63}$/;
 export const BARE_COMMAND_RE = /^[A-Za-z0-9._@-]{1,64}$/;
 const SAFE_PATH_SEGMENT_RE = /^[A-Za-z0-9._ -]+$/;
@@ -31,10 +35,13 @@ const MAX_SUMMARY = 512;
 const MAX_NAME = 128;
 
 const SECRET_PATTERNS: RegExp[] = [
-  /sk-[a-z0-9]{12,}/,
+  // OpenAI project/service-account keys and other vendor keys using sk-*. The
+  // variable-length middle prefix covers sk-proj-, sk-ant-, and sk-live- keys.
+  /\bsk-(?:[a-z0-9]+-)*[a-z0-9_-]{12,}\b/,
   /sk_live/,
   /sk_test/,
-  /bearer [a-z0-9._-]{16,}/,
+  /\bbearer [a-z0-9._-]{16,}\b/,
+  /\bbasic [a-z0-9+/=]{8,}\b/,
   /ghp_[a-z0-9]{8,}/,
   /gho_[a-z0-9]{8,}/,
   /ghu_[a-z0-9]{8,}/,
@@ -85,6 +92,13 @@ export function isBareCommand(command: string): boolean {
   if (command.length === 0 || command.length > 64) return false;
   if (command.includes('/') || command.includes('\\') || command.includes('..')) return false;
   return BARE_COMMAND_RE.test(command);
+}
+
+/** Exact npm package specs prevent a reviewed stdio install from mutating later. */
+function npmPackageVersion(arg: string): string | null | undefined {
+  const match = arg.match(/^(@[a-z0-9][a-z0-9._-]*\/[a-z0-9][a-z0-9._-]*|[a-z0-9][a-z0-9._-]*)(?:@(.+))?$/i);
+  if (!match) return null; // option value or process argument, not an npm spec
+  return match[2];
 }
 
 export function isSafeFileName(name: string): boolean {
@@ -156,78 +170,46 @@ const PRIVATE_HOSTNAMES = new Set([
   '::1',
 ]);
 const PRIVATE_SUFFIXES = ['.localhost', '.localdomain', '.local', '.internal'];
-const PRIVATE_CIDRS = [
-  /^127\./,
-  /^10\./,
-  /^172\.(1[6-9]|2\d|3[01])\./,
-  /^192\.168\./,
-  /^169\.254\./,
-  /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./,
-  /^192\.0\.0\./,
-  /^192\.0\.2\./,
-  /^198\.18\./,
-  /^198\.51\.100\./,
-  /^203\.0\.113\./,
-  /^24[0-9]\./,
-  /^25[0-5]\./,
-  /^0\./,
-];
+
+// Reject non-global/special-use destinations, not just RFC1918. Separate
+// BlockLists are required: Node's mapped-IPv6 subnet rule otherwise matches
+// ordinary IPv4 addresses too.
+const SPECIAL_USE_IPV4 = new net.BlockList();
+const SPECIAL_USE_IPV6 = new net.BlockList();
+for (const [network, prefix] of [
+  ['0.0.0.0', 8], ['10.0.0.0', 8], ['100.64.0.0', 10], ['127.0.0.0', 8],
+  ['169.254.0.0', 16], ['172.16.0.0', 12], ['192.0.0.0', 24],
+  ['192.0.2.0', 24], ['192.31.196.0', 24], ['192.52.193.0', 24],
+  ['192.88.99.0', 24], ['192.168.0.0', 16], ['192.175.48.0', 24],
+  ['198.18.0.0', 15], ['198.51.100.0', 24], ['203.0.113.0', 24],
+  ['224.0.0.0', 4], ['240.0.0.0', 4],
+] as const) SPECIAL_USE_IPV4.addSubnet(network, prefix, 'ipv4');
+for (const [network, prefix] of [
+  ['::', 96], ['::ffff:0:0', 96], ['64:ff9b::', 96], ['64:ff9b:1::', 48],
+  ['100::', 64], ['2001::', 23], ['2001:db8::', 32], ['2002::', 16],
+  ['2620:4f:8000::', 48], ['3fff::', 20], ['5f00::', 16],
+  ['fc00::', 7], ['fec0::', 10], ['fe80::', 10], ['ff00::', 8],
+] as const) SPECIAL_USE_IPV6.addSubnet(network, prefix, 'ipv6');
 
 function isPrivateIpv4Octets(o: [number, number, number, number]): boolean {
-  return (
-    o[0] === 0 ||
-    o[0] === 10 ||
-    o[0] === 127 ||
-    (o[0] === 169 && o[1] === 254) ||
-    (o[0] === 172 && o[1] >= 16 && o[1] <= 31) ||
-    (o[0] === 192 && o[1] === 168) ||
-    (o[0] === 100 && o[1] >= 64 && o[1] <= 127) ||
-    (o[0] === 192 && o[1] === 0 && o[2] === 0) ||
-    (o[0] === 192 && o[1] === 0 && o[2] === 2) ||
-    (o[0] === 198 && o[1] === 18) ||
-    (o[0] === 198 && o[1] === 51 && o[2] === 100) ||
-    (o[0] === 203 && o[1] === 0 && o[2] === 113) ||
-    o[0] >= 240
-  );
+  return SPECIAL_USE_IPV4.check(o.join('.'), 'ipv4');
 }
 
 function isPrivateIpv6(host: string): boolean {
-  const a = host.toLowerCase().split('%')[0];
-  if (!a.includes(':')) return false;
-  if (a === '::' || a === '::1' || a === '0:0:0:0:0:0:0:1') return true;
-  const m = a.match(/^::(?:ffff:)?([0-9a-f.:]+)$/);
-  if (m) {
-    if (m[1].includes('.')) {
-      const dotted = canonicalizeIpv4(m[1]);
-      if (!dotted) return true;
-      const parts = dotted.split('.').map(Number) as [number, number, number, number];
-      return isPrivateIpv4Octets(parts);
-    }
-    const hx = m[1].match(/^([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
-    if (hx) {
-      const n = (parseInt(hx[1], 16) * 0x10000) + parseInt(hx[2], 16);
-      return isPrivateIpv4Octets([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
-    }
-    return true;
-  }
-  const head = parseInt(a.split(':')[0] || 'z', 16);
-  if (!Number.isFinite(head)) return true;
-  if ((head & 0xfe00) === 0xfc00) return true; // fc00::/7 unique-local
-  if ((head & 0xffc0) === 0xfe80) return true; // fe80::/10 link-local
-  if ((head & 0xff00) === 0xff00) return true; // ff00::/8 multicast
-  return false;
+  const address = host.toLowerCase().split('%')[0];
+  if (!address.includes(':')) return false;
+  return net.isIP(address) !== 6 || SPECIAL_USE_IPV6.check(address, 'ipv6');
 }
 
 export function isPrivateHost(host: string): boolean {
-  const raw = host.trim().replace(/^\[|\]$/g, '');
-  const lower = raw.toLowerCase();
+  const lower = host.trim().replace(/^\[|\]$/g, '').toLowerCase().replace(/\.+$/, '');
   if (!lower) return true;
   if (PRIVATE_HOSTNAMES.has(lower)) return true;
+  if (PRIVATE_SUFFIXES.some(suffix => lower.endsWith(suffix))) return true;
   const canonical = canonicalizeIpv4(lower);
-  const candidate = canonical ?? lower;
-  if (PRIVATE_HOSTNAMES.has(candidate)) return true;
-  if (PRIVATE_SUFFIXES.some(suffix => candidate.endsWith(suffix))) return true;
-  if (PRIVATE_CIDRS.some(re => re.test(candidate))) return true;
+  if (canonical) {
+    return isPrivateIpv4Octets(canonical.split('.').map(Number) as [number, number, number, number]);
+  }
   return isPrivateIpv6(lower);
 }
 
@@ -244,6 +226,39 @@ export function isPublicHttpsUrl(raw: string): boolean {
   const host = url.hostname;
   if (host.length === 0) return false;
   return !isPrivateHost(host);
+}
+
+export type CatalogDnsLookup = (hostname: string, options: { all: true }) => Promise<LookupAddress[]>;
+
+/**
+ * Resolve a catalog URL and reject every private/special-use DNS answer. This
+ * is the CI policy gate; clients independently pin their actual connections to
+ * validated answers so a later DNS change cannot redirect a live request.
+ */
+export async function validatePublicHttpsUrlDns(
+  raw: string,
+  lookup: CatalogDnsLookup = dns.promises.lookup,
+): Promise<string | null> {
+  if (!isPublicHttpsUrl(raw)) return 'must be an HTTPS URL on a public host';
+  const hostname = new URL(raw).hostname.replace(/^\[|\]$/g, '').replace(/\.+$/, '');
+  let answers: LookupAddress[];
+  try {
+    answers = await lookup(hostname, { all: true });
+  } catch (err) {
+    return `DNS resolution failed for ${hostname}: ${(err as Error).message}`;
+  }
+  if (!Array.isArray(answers) || answers.length === 0) {
+    return `DNS resolution returned no addresses for ${hostname}`;
+  }
+  for (const answer of answers) {
+    if (!answer || typeof answer.address !== 'string' || net.isIP(answer.address) === 0) {
+      return `DNS resolution returned an invalid address for ${hostname}`;
+    }
+    if (isPrivateHost(answer.address)) {
+      return `${hostname} resolves to private or special-use address ${answer.address}`;
+    }
+  }
+  return null;
 }
 
 export function looksLikeSecret(value: string): boolean {
@@ -329,18 +344,34 @@ export function validateMcpPayload(raw: Record<string, unknown>): string[] {
     if (raw.serverUrl !== undefined) {
       errors.push('mcp stdio transport must not carry serverUrl');
     }
+    if (raw.authorizationEnv !== undefined || raw.headers !== undefined) {
+      errors.push('mcp stdio transport must not carry HTTP authorizationEnv or headers');
+    }
     if (raw.args !== undefined) {
       if (!Array.isArray(raw.args)) {
         errors.push('mcp.args must be an array');
       } else {
         if (raw.args.length > MAX_ARGS) errors.push(`mcp.args carries more than ${MAX_ARGS} entries`);
         raw.args.forEach((arg, index) => {
-          if (typeof arg !== 'string' || arg.length === 0 || arg.length > MAX_ARG_BYTES || hasControlChars(arg)) {
-            errors.push(`mcp.args[${index}] must be 1..=${MAX_ARG_BYTES} printable chars`);
+          if (typeof arg !== 'string' || arg.length === 0 || byteLength(arg) > MAX_ARG_BYTES || hasControlChars(arg)) {
+            errors.push(`mcp.args[${index}] must be 1..=${MAX_ARG_BYTES} printable bytes`);
           }
-          if (typeof arg === 'string') errors.push(...scanSecrets(`mcp.args[${index}]`, arg));
+          if (typeof arg === 'string') {
+            errors.push(...scanSecrets(`mcp.args[${index}]`, arg));
+            if (command === 'npx') {
+              const version = npmPackageVersion(arg);
+              if (version !== null && (version === undefined || !isValidVersion(version))) {
+                errors.push(`mcp.args[${index}] must pin an exact npm package version (for example package@1.2.3)`);
+              }
+            }
+          }
         });
+        if (command === 'npx' && !raw.args.some(arg => typeof arg === 'string' && npmPackageVersion(arg) !== null)) {
+          errors.push('mcp npx transport must include an npm package argument');
+        }
       }
+    } else if (command === 'npx') {
+      errors.push('mcp npx transport must include an exactly version-pinned package argument');
     }
   }
   if (raw.authorizationEnv !== undefined) {
@@ -384,6 +415,9 @@ export function validateMcpPayload(raw: Record<string, unknown>): string[] {
 
 export function validateSkillPayload(id: string, files: PayloadFile[]): string[] {
   const errors: string[] = [];
+  if (id.length < 2 || !isValidListingId(id)) {
+    errors.push('skill name must be a 2..=64 char kebab-case listing id');
+  }
   if (files.length === 0 || files.length > MAX_FILES) {
     errors.push(`skill payload must carry 1..=${MAX_FILES} files (got ${files.length})`);
   }
@@ -460,11 +494,23 @@ function validateCommon(fields: Record<string, unknown>, kind: MarketplaceKind, 
     }
   }
   if (fields.description !== undefined && typeof fields.description !== 'string') errors.push('description must be a string');
-  if (fields.homepage_url !== undefined && (typeof fields.homepage_url !== 'string' || fields.homepage_url.length === 0)) {
-    errors.push('homepage_url must be a non-empty string');
+  if (fields.homepage_url !== undefined && (typeof fields.homepage_url !== 'string' || !isPublicHttpsUrl(fields.homepage_url))) {
+    errors.push('homepage_url must be a public HTTPS URL');
   }
-  if (fields.icon_url !== undefined && (typeof fields.icon_url !== 'string' || fields.icon_url.length === 0)) {
-    errors.push('icon_url must be a non-empty string');
+  if (fields.icon_url !== undefined && (typeof fields.icon_url !== 'string' || !isPublicHttpsUrl(fields.icon_url))) {
+    errors.push('icon_url must be a public HTTPS URL');
+  }
+  for (const field of ['name', 'summary', 'description', 'author', 'homepage_url', 'icon_url'] as const) {
+    const value = fields[field];
+    if (typeof value === 'string') errors.push(...scanSecrets(field, value));
+  }
+  for (const field of ['categories', 'tags'] as const) {
+    const values = fields[field];
+    if (Array.isArray(values)) {
+      values.forEach((value, index) => {
+        if (typeof value === 'string') errors.push(...scanSecrets(`${field}[${index}]`, value));
+      });
+    }
   }
   return errors;
 }
@@ -486,6 +532,34 @@ export interface ListingDetail {
   tags: string[];
   surfaces: Surface[];
   payload: MarketplacePayload;
+}
+
+export interface CatalogDnsIssue {
+  id: string;
+  field: 'homepage_url' | 'icon_url' | 'payload.serverUrl';
+  url: string;
+  reason: string;
+}
+
+/** Validate every outbound URL without fetching untrusted endpoint content. */
+export async function validateCatalogDns(
+  details: ListingDetail[],
+  lookup: CatalogDnsLookup = dns.promises.lookup,
+): Promise<CatalogDnsIssue[]> {
+  const issues: CatalogDnsIssue[] = [];
+  for (const detail of details) {
+    const targets: Array<{ field: CatalogDnsIssue['field']; url: string }> = [];
+    if (detail.homepage_url) targets.push({ field: 'homepage_url', url: detail.homepage_url });
+    if (detail.icon_url) targets.push({ field: 'icon_url', url: detail.icon_url });
+    if (detail.payload.kind === 'mcp' && detail.payload.transport === 'http' && detail.payload.serverUrl) {
+      targets.push({ field: 'payload.serverUrl', url: detail.payload.serverUrl });
+    }
+    for (const target of targets) {
+      const reason = await validatePublicHttpsUrlDns(target.url, lookup);
+      if (reason) issues.push({ id: detail.id, field: target.field, url: target.url, reason });
+    }
+  }
+  return issues;
 }
 
 function splitFrontmatter(text: string): { data: Record<string, unknown>; body: string } {
@@ -587,7 +661,11 @@ function loadSkill(repoRoot: string, dir: string, errors: string[]): ListingDeta
     errors.push(`${path.relative(repoRoot, file)}: missing description frontmatter`);
     return null;
   }
-  const name = asStringOr(data.name, id);
+  if (typeof data.name !== 'string' || data.name.length === 0) {
+    errors.push(`${path.relative(repoRoot, file)}: missing name frontmatter`);
+    return null;
+  }
+  const name = data.name;
   if (name !== id) {
     errors.push(`${path.relative(repoRoot, file)}: frontmatter name "${name}" does not match directory "${id}"`);
     return null;
@@ -611,6 +689,8 @@ function loadSkill(repoRoot: string, dir: string, errors: string[]): ListingDeta
       categories: metadata.categories,
       tags: metadata.tags,
       surfaces: metadata.surfaces,
+      homepage_url: metadata.homepage_url,
+      icon_url: metadata.icon_url,
     },
     'skill',
     id,
@@ -836,10 +916,15 @@ export function writeCatalog(outDir: string, details: ListingDetail[], generated
   return index;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const outDir = path.join(repoRoot, 'dist', 'listings');
   const { details, errors } = buildCatalog(repoRoot);
+  if (errors.length === 0) {
+    for (const issue of await validateCatalogDns(details)) {
+      errors.push(`${issue.id} ${issue.field}: ${issue.reason} (${issue.url})`);
+    }
+  }
   if (errors.length > 0) {
     console.error('catalog generation failed:');
     for (const error of errors) console.error(`  - ${error}`);
@@ -854,5 +939,8 @@ function main(): void {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main();
+  main().catch(err => {
+    console.error('catalog generation failed:', err);
+    process.exit(1);
+  });
 }
