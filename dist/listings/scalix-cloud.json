@@ -6,10 +6,10 @@
   "description": "Official Scalix Cloud MCP server over Streamable HTTP. Connects coding agents to serverless PostgreSQL (ScalixNova), serverless functions, isolated sandboxes, persistent Linux computers, object storage, and AI inference using a single API key read from SCALIX_API_KEY.",
   "author": "Scalix World",
   "homepage_url": "https://scalix.world/mcp",
-  "icon_url": "https://scalix.world/scalix-logo.svg",
+  "icon_url": "https://scalix.world/scalix-logo.png",
   "trust": "official",
   "install_count": 0,
-  "version": "1.6.0",
+  "version": "1.6.1",
   "featured": true,
   "categories": [
     "cloud",

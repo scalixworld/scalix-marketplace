@@ -1,9 +1,13 @@
 ---
 name: scalix-database
-description: "Provision and use ScalixNova, Scalix Cloud's serverless PostgreSQL: create databases, choose Postgres versions, run SQL, and use branching, point-in-time recovery, and isolation tiers. Use when the user wants a Postgres database on Scalix, asks about ScalixNova, database branching, PITR, or pgvector on Scalix."
+description: "Provision and use ScalixNova, Scalix Cloud's serverless
+  PostgreSQL: create databases, choose Postgres versions, run SQL, and use
+  branching, point-in-time recovery, and isolation tiers. Use when the user
+  wants a Postgres database on Scalix, asks about ScalixNova, database
+  branching, PITR, or pgvector on Scalix."
 metadata:
   author: Scalix World
-  version: 1.6.0
+  version: 1.6.1
   trust: official
   categories:
     - development
@@ -17,7 +21,6 @@ metadata:
   source:
     repository: scalixworld/scalix-cloud-mcp
 ---
-
 
 # ScalixNova — serverless PostgreSQL on Scalix Cloud
 

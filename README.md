@@ -53,7 +53,7 @@ CI (`.github/workflows/build-catalog.yml`) runs these checks on every push and p
       "author": "Scalix World",
       "trust": "official",
       "install_count": 0,
-      "version": "1.6.0",
+      "version": "1.6.1",
       "featured": true,
       "categories": ["cloud", "development"],
       "tags": ["scalix", "cloud", "postgres", "sandboxes", "functions", "ai"],
