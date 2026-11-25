@@ -1,0 +1,36 @@
+{
+  "id": "figma",
+  "kind": "mcp",
+  "name": "Figma",
+  "summary": "Inspect Figma frame structure, design tokens, variables, and layout context directly from your coding agent.",
+  "description": "Figma's remote MCP server over Streamable HTTP (https://mcp.figma.com/mcp). Gives coding agents structured access to Figma frames, components, design variables, and layout specs over OAuth for accurate UI implementation.",
+  "author": "Figma",
+  "homepage_url": "https://developers.figma.com/docs/figma-mcp-server/",
+  "icon_url": "https://scalix.world/logos/marketplace/figma.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "design",
+    "devtools"
+  ],
+  "tags": [
+    "figma",
+    "design",
+    "ui",
+    "frontend",
+    "tokens"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "figma",
+    "serverUrl": "https://mcp.figma.com/mcp"
+  }
+}

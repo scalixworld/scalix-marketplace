@@ -196,7 +196,7 @@ export function lintListingText(relFile: string, text: string, isExternal = fals
         file: relFile,
         line: field.line,
         title: `Prose em dash in ${field.label}`,
-        explanation: 'Per Scalix house style (rules/scalix-coding-standards.md), replace em dashes with colons, commas, or parentheses.',
+        explanation: 'Per Scalix house style, replace em dashes with colons, commas, or parentheses.',
         source: 'deterministic',
       });
     }

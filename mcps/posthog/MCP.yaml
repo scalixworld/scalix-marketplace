@@ -1,0 +1,33 @@
+id: posthog
+name: PostHog
+summary: "Run HogQL queries, inspect product analytics, toggle feature flags, and investigate captured errors."
+description: "PostHog's hosted MCP server over Streamable HTTP (https://mcp.posthog.com/mcp). Lets coding agents inspect product usage, run HogQL queries, toggle feature flags, and investigate captured exceptions."
+author: PostHog
+homepage_url: https://posthog.com/docs/model-context-protocol
+icon_url: https://scalix.world/logos/marketplace/posthog.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - analytics
+  - observability
+tags:
+  - posthog
+  - analytics
+  - feature-flags
+  - errors
+  - hogql
+  - uk
+  - europe
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: posthog
+  serverUrl: https://mcp.posthog.com/mcp
+  authorizationEnv: POSTHOG_PERSONAL_API_KEY
+  requiredEnv:
+    - POSTHOG_PERSONAL_API_KEY

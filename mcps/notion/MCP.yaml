@@ -1,0 +1,28 @@
+id: notion
+name: Notion
+summary: "Search workspace pages, query Notion databases, and draft or update engineering documentation."
+description: "Notion's hosted MCP server over Streamable HTTP (https://mcp.notion.com/mcp). Authenticates with your Notion workspace via OAuth so coding agents can read specs, RFCs, and structured Notion databases without custom glue code."
+author: Notion
+homepage_url: https://developers.notion.com/docs/mcp
+icon_url: https://scalix.world/logos/marketplace/notion.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - productivity
+  - documentation
+tags:
+  - notion
+  - wiki
+  - docs
+  - databases
+  - notes
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: notion
+  serverUrl: https://mcp.notion.com/mcp

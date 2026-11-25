@@ -6,6 +6,8 @@ description: Deploy and invoke serverless functions on Scalix Cloud across Node
   or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold
   starts.
 metadata:
+  title: Scalix Functions
+  summary: "Deploy and invoke serverless Node and Python functions or container images on Scalix Cloud."
   author: Scalix World
   version: 1.6.1
   trust: official
@@ -18,6 +20,8 @@ metadata:
     - coder
     - ide
     - editor
+  homepage_url: https://scalix.world/mcp
+  icon_url: https://scalix.world/scalix-logo.svg
   source:
     repository: scalixworld/scalix-cloud-mcp
 ---

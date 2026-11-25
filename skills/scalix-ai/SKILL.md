@@ -7,6 +7,8 @@ description: "Run AI inference on Scalix Cloud through the OpenAI-compatible
   Scalix AI or its model catalog, or wants to point existing OpenAI-compatible
   code at Scalix."
 metadata:
+  title: Scalix AI
+  summary: "OpenAI-compatible AI inference on Scalix Cloud: chat, streaming, embeddings, speech, RAG, and web research."
   author: Scalix World
   version: 1.6.1
   trust: official
@@ -19,6 +21,8 @@ metadata:
     - coder
     - ide
     - editor
+  homepage_url: https://scalix.world/mcp
+  icon_url: https://scalix.world/scalix-logo.svg
   source:
     repository: scalixworld/scalix-cloud-mcp
 ---

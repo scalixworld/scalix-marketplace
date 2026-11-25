@@ -1,0 +1,39 @@
+{
+  "id": "intercom",
+  "kind": "mcp",
+  "name": "Intercom",
+  "summary": "Search customer conversations, inspect support tickets, and correlate user feedback with engineering issues.",
+  "description": "Intercom's official hosted MCP server over Streamable HTTP (https://mcp.intercom.com/mcp), founded in Dublin. Uses Intercom OAuth so agents can search customer threads, summarize support tickets, and correlate user feedback with engineering issues.",
+  "author": "Intercom",
+  "homepage_url": "https://developers.intercom.com/docs/guides/mcp",
+  "icon_url": "https://scalix.world/logos/marketplace/intercom.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "support",
+    "productivity"
+  ],
+  "tags": [
+    "intercom",
+    "support",
+    "tickets",
+    "conversations",
+    "customers",
+    "europe",
+    "ireland",
+    "uk"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "intercom",
+    "serverUrl": "https://mcp.intercom.com/mcp"
+  }
+}

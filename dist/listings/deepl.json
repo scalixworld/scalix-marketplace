@@ -1,0 +1,45 @@
+{
+  "id": "deepl",
+  "kind": "mcp",
+  "name": "DeepL",
+  "summary": "Translate text and localization strings, detect source languages, rephrase copy, and query glossaries.",
+  "description": "DeepL's official MCP server built in Cologne and spawned locally via npx (deepl-mcp-server@1.3.16). Uses DEEPL_API_KEY to translate copy and localization strings, detect source languages, and rephrase text across supported target locales.",
+  "author": "DeepL",
+  "homepage_url": "https://github.com/DeepL/deepl-mcp-server",
+  "icon_url": "https://scalix.world/logos/marketplace/deepl.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "ai",
+    "localization"
+  ],
+  "tags": [
+    "deepl",
+    "translation",
+    "localization",
+    "i18n",
+    "writing",
+    "europe",
+    "germany"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "stdio",
+    "serverLabel": "deepl",
+    "command": "npx",
+    "args": [
+      "-y",
+      "deepl-mcp-server@1.3.16"
+    ],
+    "requiredEnv": [
+      "DEEPL_API_KEY"
+    ]
+  }
+}

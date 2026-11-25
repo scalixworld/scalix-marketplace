@@ -5,6 +5,8 @@ description: Connect to and operate Scalix Cloud through the remote MCP
   set up Scalix, connect an agent or MCP client to Scalix Cloud, list available
   platform tools, or asks how Scalix auth and API keys work.
 metadata:
+  title: Scalix Platform
+  summary: "Operate Scalix Cloud via remote MCP, plain-HTTP API, or CLI with OAuth 2.1 or API key auth."
   author: Scalix World
   version: 1.6.1
   trust: official
@@ -17,6 +19,8 @@ metadata:
     - coder
     - ide
     - editor
+  homepage_url: https://scalix.world/mcp
+  icon_url: https://scalix.world/scalix-logo.svg
   source:
     repository: scalixworld/scalix-cloud-mcp
 ---

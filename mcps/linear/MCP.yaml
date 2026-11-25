@@ -1,0 +1,28 @@
+id: linear
+name: Linear
+summary: "Search, create, and update Linear issues, projects, cycles, labels, and team comments."
+description: "Linear's hosted MCP server over Streamable HTTP (https://mcp.linear.app/mcp). Connects coding agents directly to your Linear workspace via OAuth 2.1 or a Linear API key so agents can read specs, triage bugs, and update issue states."
+author: Linear
+homepage_url: https://linear.app/docs/mcp
+icon_url: https://scalix.world/logos/marketplace/linear.svg
+trust: verified
+version: 1.0.0
+featured: true
+categories:
+  - productivity
+  - development
+tags:
+  - linear
+  - issues
+  - projects
+  - cycles
+  - triage
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: linear
+  serverUrl: https://mcp.linear.app/mcp

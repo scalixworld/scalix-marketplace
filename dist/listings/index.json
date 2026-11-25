@@ -1,40 +1,15 @@
 {
-  "generated_at": "2026-11-21T18:14:00.328Z",
-  "count": 16,
+  "generated_at": "2026-11-25T10:29:24.236Z",
+  "count": 43,
   "listings": [
-    {
-      "id": "github",
-      "kind": "mcp",
-      "name": "GitHub",
-      "summary": "Official GitHub MCP server for repositories, issues, pull requests, Actions, code scanning, and Copilot over one authenticated endpoint.",
-      "author": "GitHub",
-      "trust": "verified",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": true,
-      "categories": [
-        "development",
-        "vcs"
-      ],
-      "tags": [
-        "github",
-        "git",
-        "pull-requests",
-        "issues",
-        "actions"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
     {
       "id": "scalix-cloud",
       "kind": "mcp",
       "name": "Scalix Cloud",
-      "summary": "Provisions and manages Scalix Cloud resources including isolated sandboxes, persistent Linux computers, serverless PostgreSQL, functions, object storage, and AI inference.",
+      "summary": "Provision and manage Scalix Cloud sandboxes, persistent Linux computers, ScalixNova Postgres, functions, storage, and AI.",
       "author": "Scalix World",
+      "homepage_url": "https://scalix.world/mcp",
+      "icon_url": "https://scalix.world/scalix-logo.png",
       "trust": "official",
       "install_count": 0,
       "version": "1.6.1",
@@ -55,7 +30,358 @@
         "coder",
         "ide",
         "editor"
-      ]
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "adyen",
+      "kind": "mcp",
+      "name": "Adyen",
+      "summary": "Create Checkout sessions, payment links, and refunds; inspect merchant accounts, webhooks, and terminals.",
+      "author": "Adyen",
+      "homepage_url": "https://github.com/Adyen/adyen-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/adyen.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "payments",
+        "fintech"
+      ],
+      "tags": [
+        "adyen",
+        "payments",
+        "checkout",
+        "webhooks",
+        "terminals",
+        "europe",
+        "netherlands"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "apify",
+      "kind": "mcp",
+      "name": "Apify",
+      "summary": "Run Apify Store Actors for web scraping, structured data extraction, crawling, and browser automation.",
+      "author": "Apify",
+      "homepage_url": "https://github.com/apify/apify-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/apify.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "scraping",
+        "research"
+      ],
+      "tags": [
+        "apify",
+        "scraping",
+        "actors",
+        "crawling",
+        "browser",
+        "europe",
+        "czechia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "browserstack",
+      "kind": "mcp",
+      "name": "BrowserStack",
+      "summary": "Run cross-browser and real-device tests, inspect session logs, debug failures, and run accessibility scans.",
+      "author": "BrowserStack",
+      "homepage_url": "https://github.com/browserstack/mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/browserstack.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "testing",
+        "browser"
+      ],
+      "tags": [
+        "browserstack",
+        "testing",
+        "qa",
+        "mobile",
+        "accessibility",
+        "india",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "canva",
+      "kind": "mcp",
+      "name": "Canva",
+      "summary": "Search Canva designs, inspect brand templates, autofill layouts, and export PNG, PDF, or deck assets.",
+      "author": "Canva",
+      "homepage_url": "https://www.canva.dev/docs/connect/mcp-server/",
+      "icon_url": "https://scalix.world/logos/marketplace/canva.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "design",
+        "productivity"
+      ],
+      "tags": [
+        "canva",
+        "design",
+        "assets",
+        "templates",
+        "brand",
+        "apac",
+        "asia",
+        "australia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "github",
+      "kind": "mcp",
+      "name": "GitHub",
+      "summary": "Manage repositories, issues, pull requests, GitHub Actions, code scanning alerts, and Copilot context.",
+      "author": "GitHub",
+      "homepage_url": "https://github.com/github/github-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/github.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "development",
+        "vcs"
+      ],
+      "tags": [
+        "github",
+        "git",
+        "pull-requests",
+        "issues",
+        "actions"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "grafana",
+      "kind": "mcp",
+      "name": "Grafana",
+      "summary": "Query Prometheus metrics, Loki logs, and Tempo traces; inspect dashboards, alert rules, and incidents.",
+      "author": "Grafana Labs",
+      "homepage_url": "https://github.com/grafana/mcp-grafana",
+      "icon_url": "https://scalix.world/logos/marketplace/grafana.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "observability",
+        "debugging"
+      ],
+      "tags": [
+        "grafana",
+        "prometheus",
+        "loki",
+        "tempo",
+        "alerting",
+        "incidents",
+        "europe"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "linear",
+      "kind": "mcp",
+      "name": "Linear",
+      "summary": "Search, create, and update Linear issues, projects, cycles, labels, and team comments.",
+      "author": "Linear",
+      "homepage_url": "https://linear.app/docs/mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/linear.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "productivity",
+        "development"
+      ],
+      "tags": [
+        "linear",
+        "issues",
+        "projects",
+        "cycles",
+        "triage"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "postman",
+      "kind": "mcp",
+      "name": "Postman",
+      "summary": "Manage Postman API collections, environments, OpenAPI specs, mock servers, and workspace requests.",
+      "author": "Postman",
+      "homepage_url": "https://github.com/postmanlabs/postman-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/postman.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "devtools",
+        "testing"
+      ],
+      "tags": [
+        "postman",
+        "api",
+        "collections",
+        "environments",
+        "mocks",
+        "india",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "razorpay",
+      "kind": "mcp",
+      "name": "Razorpay",
+      "summary": "Create orders, UPI and standard payment links, and QR codes; manage captures, refunds, and settlements.",
+      "author": "Razorpay",
+      "homepage_url": "https://github.com/razorpay/razorpay-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/razorpay.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "payments",
+        "fintech"
+      ],
+      "tags": [
+        "razorpay",
+        "payments",
+        "upi",
+        "orders",
+        "refunds",
+        "india",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "sarvam-ai",
+      "kind": "mcp",
+      "name": "Sarvam AI",
+      "summary": "Indian-language speech-to-text, Bulbul text-to-speech, translation, document parsing, and Sarvam SDK helpers.",
+      "author": "Sarvam AI",
+      "homepage_url": "https://github.com/sarvamai/sarvam-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/sarvam-ai.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "ai",
+        "speech"
+      ],
+      "tags": [
+        "sarvam",
+        "indic",
+        "speech",
+        "tts",
+        "stt",
+        "translation",
+        "india",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "uvx"
+    },
+    {
+      "id": "stripe",
+      "kind": "mcp",
+      "name": "Stripe",
+      "summary": "Inspect customers, payment intents, subscriptions, invoices, payment links, and Stripe documentation.",
+      "author": "Stripe",
+      "homepage_url": "https://docs.stripe.com/mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/stripe.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": true,
+      "categories": [
+        "payments",
+        "cloud"
+      ],
+      "tags": [
+        "stripe",
+        "payments",
+        "billing",
+        "subscriptions",
+        "webhooks"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
     },
     {
       "id": "bug-triager",
@@ -63,6 +389,8 @@
       "name": "Bug Triager",
       "summary": "Reproduces and narrows a reported bug before code changes: minimal repro, bisected root cause, and ranked hypotheses with evidence.",
       "author": "Scalix World",
+      "homepage_url": "https://github.com/scalixworld/scalix-marketplace",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.0.0",
@@ -84,37 +412,13 @@
       ]
     },
     {
-      "id": "chrome-devtools",
-      "kind": "mcp",
-      "name": "Chrome DevTools",
-      "summary": "Drive and inspect a live Chrome browser from the agent: traces, performance profiles, console logs, and network requests.",
-      "author": "Google",
-      "trust": "verified",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": false,
-      "categories": [
-        "browser",
-        "devtools"
-      ],
-      "tags": [
-        "chrome",
-        "devtools",
-        "performance",
-        "debugging"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
-    {
       "id": "code-reviewer",
       "kind": "subagent",
       "name": "Code Reviewer",
       "summary": "Reviews a diff like a skeptical staff engineer: correctness first, blast radius second, style last, with every finding cited to file and line.",
       "author": "Scalix World",
+      "homepage_url": "https://github.com/scalixworld/scalix-marketplace",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.0.0",
@@ -136,87 +440,13 @@
       ]
     },
     {
-      "id": "context7",
-      "kind": "mcp",
-      "name": "Context7",
-      "summary": "Up-to-date documentation for any library, pulled straight from the source repo into the agent's context.",
-      "author": "Upstash",
-      "trust": "verified",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": false,
-      "categories": [
-        "documentation"
-      ],
-      "tags": [
-        "docs",
-        "libraries",
-        "upstash"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
-    {
-      "id": "deepwiki",
-      "kind": "mcp",
-      "name": "DeepWiki",
-      "summary": "Free, no-authentication wiki and Q&A over any public GitHub repository with repo structure, docs, and grounded answers.",
-      "author": "Cognition (Devin)",
-      "trust": "verified",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": false,
-      "categories": [
-        "documentation",
-        "research"
-      ],
-      "tags": [
-        "wiki",
-        "documentation",
-        "github",
-        "research"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
-    {
-      "id": "playwright",
-      "kind": "mcp",
-      "name": "Playwright MCP",
-      "summary": "Automate browsers through Playwright's accessibility tree to navigate pages, fill forms, and run end-to-end checks.",
-      "author": "Microsoft",
-      "trust": "verified",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": false,
-      "categories": [
-        "testing",
-        "browser"
-      ],
-      "tags": [
-        "playwright",
-        "browser",
-        "automation",
-        "e2e"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
-    {
       "id": "pre-merge-security-review",
       "kind": "rule",
       "name": "Pre-Merge Security Review",
       "summary": "Pre-PR security checklist covering credentials, untrusted input, SSRF, path traversal, supply-chain licenses, and production deploy gates.",
       "author": "Scalix World",
+      "homepage_url": "https://github.com/scalixworld/scalix-marketplace",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.0.0",
@@ -240,9 +470,11 @@
     {
       "id": "scalix-ai",
       "kind": "skill",
-      "name": "scalix-ai",
-      "summary": "Run AI inference on Scalix Cloud through the OpenAI-compatible API: chat completions, streaming, embeddings, image generation, speech, transcription, RAG, and web research across the public multi-vendor Scalix AI model catalog. Use when the user wants LLM inference on Scalix, asks about Scalix AI or its model catalog, or wants to point existing OpenAI-compatible code at Scalix.",
+      "name": "Scalix AI",
+      "summary": "OpenAI-compatible AI inference on Scalix Cloud: chat, streaming, embeddings, speech, RAG, and web research.",
       "author": "Scalix World",
+      "homepage_url": "https://scalix.world/mcp",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.6.1",
@@ -261,36 +493,13 @@
       ]
     },
     {
-      "id": "scalix-coding-standards",
-      "kind": "rule",
-      "name": "Scalix Coding Standards",
-      "summary": "House engineering standards for agent-written code in Scalix repositories: verify against real code, no em dashes, no fabricated metrics, and client-side security parity.",
-      "author": "Scalix World",
-      "trust": "official",
-      "install_count": 0,
-      "version": "1.0.0",
-      "featured": false,
-      "categories": [
-        "development"
-      ],
-      "tags": [
-        "scalix",
-        "standards",
-        "house-style",
-        "security"
-      ],
-      "surfaces": [
-        "coder",
-        "ide",
-        "editor"
-      ]
-    },
-    {
       "id": "scalix-database",
       "kind": "skill",
-      "name": "scalix-database",
-      "summary": "Provision and use ScalixNova, Scalix Cloud's serverless PostgreSQL: create databases, choose Postgres versions, run SQL, and use branching, point-in-time recovery, and isolation tiers. Use when the user wants a Postgres database on Scalix, asks about ScalixNova, database branching, PITR, or pgvector on Scalix.",
+      "name": "ScalixNova Database",
+      "summary": "Provision and operate ScalixNova serverless PostgreSQL with branching, PITR, SQL, and pgvector.",
       "author": "Scalix World",
+      "homepage_url": "https://scalix.world/mcp",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.6.1",
@@ -311,9 +520,11 @@
     {
       "id": "scalix-functions",
       "kind": "skill",
-      "name": "scalix-functions",
-      "summary": "Deploy and invoke serverless functions on Scalix Cloud across Node and Python runtimes, source or container-image deploys, invocation, and scaling behaviour. Use when the user wants to deploy a function, API endpoint, or webhook handler on Scalix, or asks about Scalix Functions runtimes and cold starts.",
+      "name": "Scalix Functions",
+      "summary": "Deploy and invoke serverless Node and Python functions or container images on Scalix Cloud.",
       "author": "Scalix World",
+      "homepage_url": "https://scalix.world/mcp",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.6.1",
@@ -334,9 +545,11 @@
     {
       "id": "scalix-platform",
       "kind": "skill",
-      "name": "scalix-platform",
-      "summary": "Connect to and operate Scalix Cloud through the remote MCP endpoint, the plain-HTTP tool surface, and the CLI. Use when the user wants to set up Scalix, connect an agent or MCP client to Scalix Cloud, list available platform tools, or asks how Scalix auth and API keys work.",
+      "name": "Scalix Platform",
+      "summary": "Operate Scalix Cloud via remote MCP, plain-HTTP API, or CLI with OAuth 2.1 or API key auth.",
       "author": "Scalix World",
+      "homepage_url": "https://scalix.world/mcp",
+      "icon_url": "https://scalix.world/scalix-logo.svg",
       "trust": "official",
       "install_count": 0,
       "version": "1.6.1",
@@ -355,11 +568,666 @@
       ]
     },
     {
+      "id": "atlassian",
+      "kind": "mcp",
+      "name": "Atlassian",
+      "summary": "Search Confluence architecture docs, query Jira issues, and inspect Compass components across your workspace.",
+      "author": "Atlassian",
+      "homepage_url": "https://www.atlassian.com/platform/remote-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/atlassian.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "productivity",
+        "development"
+      ],
+      "tags": [
+        "atlassian",
+        "jira",
+        "confluence",
+        "compass",
+        "issues",
+        "apac",
+        "australia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "brave-search",
+      "kind": "mcp",
+      "name": "Brave Search",
+      "summary": "Query the independent Brave Search index for web, news, image, video, and local search results.",
+      "author": "Brave",
+      "homepage_url": "https://github.com/brave/brave-search-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/brave.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "search",
+        "research"
+      ],
+      "tags": [
+        "brave",
+        "search",
+        "web-search",
+        "news"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "cashfree",
+      "kind": "mcp",
+      "name": "Cashfree Payments",
+      "summary": "Manage Cashfree Payment Gateway orders, payment links, payouts, settlements, disputes, and KYC flows.",
+      "author": "Cashfree",
+      "homepage_url": "https://github.com/cashfree/cashfree-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/cashfree.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "payments",
+        "fintech"
+      ],
+      "tags": [
+        "cashfree",
+        "payments",
+        "payouts",
+        "kyc",
+        "settlements",
+        "india",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "chrome-devtools",
+      "kind": "mcp",
+      "name": "Chrome DevTools",
+      "summary": "Drive and inspect a live Chrome browser from the agent: traces, performance profiles, console logs, and network requests.",
+      "author": "Google",
+      "homepage_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/google.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "browser",
+        "devtools"
+      ],
+      "tags": [
+        "chrome",
+        "devtools",
+        "performance",
+        "debugging"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "cloudflare-docs",
+      "kind": "mcp",
+      "name": "Cloudflare Docs",
+      "summary": "Search current Cloudflare documentation for Workers, Pages, R2, D1, DNS, Zero Trust, and edge networking.",
+      "author": "Cloudflare",
+      "homepage_url": "https://github.com/cloudflare/mcp-server-cloudflare",
+      "icon_url": "https://scalix.world/logos/marketplace/cloudflare.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "documentation",
+        "cloud"
+      ],
+      "tags": [
+        "cloudflare",
+        "workers",
+        "dns",
+        "cdn",
+        "docs"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "context7",
+      "kind": "mcp",
+      "name": "Context7",
+      "summary": "Up-to-date documentation for any library, pulled straight from the source repo into the agent's context.",
+      "author": "Upstash",
+      "homepage_url": "https://context7.com",
+      "icon_url": "https://scalix.world/logos/marketplace/upstash.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "documentation"
+      ],
+      "tags": [
+        "docs",
+        "libraries",
+        "upstash",
+        "europe"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "deepl",
+      "kind": "mcp",
+      "name": "DeepL",
+      "summary": "Translate text and localization strings, detect source languages, rephrase copy, and query glossaries.",
+      "author": "DeepL",
+      "homepage_url": "https://github.com/DeepL/deepl-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/deepl.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "ai",
+        "localization"
+      ],
+      "tags": [
+        "deepl",
+        "translation",
+        "localization",
+        "i18n",
+        "writing",
+        "europe",
+        "germany"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "deepwiki",
+      "kind": "mcp",
+      "name": "DeepWiki",
+      "summary": "Free, no-authentication wiki and Q&A over any public GitHub repository with repo structure, docs, and grounded answers.",
+      "author": "Cognition (Devin)",
+      "homepage_url": "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/cognition.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "documentation",
+        "research"
+      ],
+      "tags": [
+        "wiki",
+        "documentation",
+        "github",
+        "research"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "exa",
+      "kind": "mcp",
+      "name": "Exa Search",
+      "summary": "Run live web search, technical documentation lookups, and grounded code context retrieval via Exa.",
+      "author": "Exa",
+      "homepage_url": "https://github.com/exa-labs/exa-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/exa.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "search",
+        "research"
+      ],
+      "tags": [
+        "exa",
+        "search",
+        "web-search",
+        "code-context",
+        "research"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "figma",
+      "kind": "mcp",
+      "name": "Figma",
+      "summary": "Inspect Figma frame structure, design tokens, variables, and layout context directly from your coding agent.",
+      "author": "Figma",
+      "homepage_url": "https://developers.figma.com/docs/figma-mcp-server/",
+      "icon_url": "https://scalix.world/logos/marketplace/figma.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "design",
+        "devtools"
+      ],
+      "tags": [
+        "figma",
+        "design",
+        "ui",
+        "frontend",
+        "tokens"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "firecrawl",
+      "kind": "mcp",
+      "name": "Firecrawl",
+      "summary": "Scrape, crawl, map, and extract clean Markdown or structured JSON data from any public website.",
+      "author": "Firecrawl",
+      "homepage_url": "https://github.com/firecrawl/firecrawl-mcp-server",
+      "icon_url": "https://scalix.world/logos/marketplace/firecrawl.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "search",
+        "browser"
+      ],
+      "tags": [
+        "firecrawl",
+        "scraping",
+        "crawling",
+        "markdown",
+        "web"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "huggingface",
+      "kind": "mcp",
+      "name": "Hugging Face",
+      "summary": "Search open-weight models, datasets, Spaces, and machine learning papers on the Hugging Face Hub.",
+      "author": "Hugging Face",
+      "homepage_url": "https://huggingface.co/settings/mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/huggingface.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "ai",
+        "research"
+      ],
+      "tags": [
+        "huggingface",
+        "models",
+        "datasets",
+        "spaces",
+        "papers",
+        "europe",
+        "france"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "intercom",
+      "kind": "mcp",
+      "name": "Intercom",
+      "summary": "Search customer conversations, inspect support tickets, and correlate user feedback with engineering issues.",
+      "author": "Intercom",
+      "homepage_url": "https://developers.intercom.com/docs/guides/mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/intercom.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "support",
+        "productivity"
+      ],
+      "tags": [
+        "intercom",
+        "support",
+        "tickets",
+        "conversations",
+        "customers",
+        "europe",
+        "ireland",
+        "uk"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "jetbrains",
+      "kind": "mcp",
+      "name": "JetBrains IDE",
+      "summary": "Connect coding agents to IntelliJ IDEA, PyCharm, WebStorm, GoLand, and RustRover for symbols and refactoring.",
+      "author": "JetBrains",
+      "homepage_url": "https://github.com/JetBrains/mcp-jetbrains",
+      "icon_url": "https://scalix.world/logos/marketplace/jetbrains.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "devtools",
+        "development"
+      ],
+      "tags": [
+        "jetbrains",
+        "intellij",
+        "pycharm",
+        "webstorm",
+        "refactoring",
+        "europe",
+        "czechia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "meilisearch",
+      "kind": "mcp",
+      "name": "Meilisearch",
+      "summary": "Manage Meilisearch indexes, tune ranking rules, ingest documents, and run full-text or hybrid search.",
+      "author": "Meilisearch",
+      "homepage_url": "https://github.com/meilisearch/meilisearch-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/meilisearch.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "search",
+        "devtools"
+      ],
+      "tags": [
+        "meilisearch",
+        "search",
+        "indexing",
+        "full-text",
+        "hybrid-search",
+        "europe",
+        "france"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "uvx"
+    },
+    {
+      "id": "memory",
+      "kind": "mcp",
+      "name": "Knowledge Graph Memory",
+      "summary": "Reference MCP memory server backed by a local knowledge graph of entities, relations, and observations across sessions.",
+      "author": "Model Context Protocol",
+      "homepage_url": "https://github.com/modelcontextprotocol/servers",
+      "icon_url": "https://scalix.world/logos/marketplace/mcp.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "ai",
+        "development"
+      ],
+      "tags": [
+        "memory",
+        "knowledge-graph",
+        "entities",
+        "reference-server"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "notion",
+      "kind": "mcp",
+      "name": "Notion",
+      "summary": "Search workspace pages, query Notion databases, and draft or update engineering documentation.",
+      "author": "Notion",
+      "homepage_url": "https://developers.notion.com/docs/mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/notion.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "productivity",
+        "documentation"
+      ],
+      "tags": [
+        "notion",
+        "wiki",
+        "docs",
+        "databases",
+        "notes"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "playwright",
+      "kind": "mcp",
+      "name": "Playwright MCP",
+      "summary": "Automate browsers through Playwright's accessibility tree to navigate pages, fill forms, and run end-to-end checks.",
+      "author": "Microsoft",
+      "homepage_url": "https://github.com/microsoft/playwright-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/microsoft.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "testing",
+        "browser"
+      ],
+      "tags": [
+        "playwright",
+        "browser",
+        "automation",
+        "e2e"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "posthog",
+      "kind": "mcp",
+      "name": "PostHog",
+      "summary": "Run HogQL queries, inspect product analytics, toggle feature flags, and investigate captured errors.",
+      "author": "PostHog",
+      "homepage_url": "https://posthog.com/docs/model-context-protocol",
+      "icon_url": "https://scalix.world/logos/marketplace/posthog.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "analytics",
+        "observability"
+      ],
+      "tags": [
+        "posthog",
+        "analytics",
+        "feature-flags",
+        "errors",
+        "hogql",
+        "uk",
+        "europe"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
+      "id": "qdrant",
+      "kind": "mcp",
+      "name": "Qdrant",
+      "summary": "Store and retrieve semantic memories, code snippets, and vector search results across Qdrant collections.",
+      "author": "Qdrant",
+      "homepage_url": "https://github.com/qdrant/mcp-server-qdrant",
+      "icon_url": "https://scalix.world/logos/marketplace/qdrant.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "search",
+        "memory"
+      ],
+      "tags": [
+        "qdrant",
+        "vector-search",
+        "embeddings",
+        "rag",
+        "memory",
+        "europe",
+        "germany"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "stdio",
+      "command": "uvx"
+    },
+    {
+      "id": "semgrep",
+      "kind": "mcp",
+      "name": "Semgrep",
+      "summary": "Scan code for security vulnerabilities, validate custom Semgrep rules, and triage AppSec findings.",
+      "author": "Semgrep",
+      "homepage_url": "https://mcp.semgrep.ai",
+      "icon_url": "https://scalix.world/logos/marketplace/semgrep.png",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "security",
+        "quality"
+      ],
+      "tags": [
+        "semgrep",
+        "sast",
+        "security",
+        "vulnerabilities",
+        "appsec",
+        "rules"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
+    },
+    {
       "id": "sentry",
       "kind": "mcp",
       "name": "Sentry",
       "summary": "Search errors, triage issues, inspect traces, and read logs from Sentry directly inside your coding agent.",
       "author": "Sentry",
+      "homepage_url": "https://github.com/getsentry/sentry-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/sentry.svg",
       "trust": "verified",
       "install_count": 0,
       "version": "1.0.0",
@@ -377,7 +1245,8 @@
         "coder",
         "ide",
         "editor"
-      ]
+      ],
+      "transport": "http"
     },
     {
       "id": "sequential-thinking",
@@ -385,6 +1254,8 @@
       "name": "Sequential Thinking",
       "summary": "Structured step-by-step problem solving that lets an agent plan, branch, and revise before committing to an answer.",
       "author": "Model Context Protocol",
+      "homepage_url": "https://github.com/modelcontextprotocol/servers",
+      "icon_url": "https://scalix.world/logos/marketplace/mcp.svg",
       "trust": "verified",
       "install_count": 0,
       "version": "1.0.0",
@@ -402,7 +1273,40 @@
         "coder",
         "ide",
         "editor"
-      ]
+      ],
+      "transport": "stdio",
+      "command": "npx"
+    },
+    {
+      "id": "wix",
+      "kind": "mcp",
+      "name": "Wix",
+      "summary": "Query Wix SDK docs, manage headless CMS collections, inspect stores, and call Wix business APIs.",
+      "author": "Wix",
+      "homepage_url": "https://dev.wix.com/docs/sdk/articles/use-the-wix-mcp/about-the-wix-mcp",
+      "icon_url": "https://scalix.world/logos/marketplace/wix.svg",
+      "trust": "verified",
+      "install_count": 0,
+      "version": "1.0.0",
+      "featured": false,
+      "categories": [
+        "cms",
+        "commerce"
+      ],
+      "tags": [
+        "wix",
+        "cms",
+        "commerce",
+        "sites",
+        "bookings",
+        "asia"
+      ],
+      "surfaces": [
+        "coder",
+        "ide",
+        "editor"
+      ],
+      "transport": "http"
     }
   ]
 }

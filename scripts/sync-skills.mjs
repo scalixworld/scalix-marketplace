@@ -73,6 +73,8 @@ function defaultMetadata(name) {
     '    - coder',
     '    - ide',
     '    - editor',
+    '  homepage_url: https://scalix.world/mcp',
+    '  icon_url: https://scalix.world/scalix-logo.svg',
     '  source:',
     '    repository: scalixworld/scalix-cloud-mcp',
   ].join('\n');

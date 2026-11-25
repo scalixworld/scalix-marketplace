@@ -1,0 +1,30 @@
+id: huggingface
+name: Hugging Face
+summary: "Search open-weight models, datasets, Spaces, and machine learning papers on the Hugging Face Hub."
+description: "Hugging Face's hosted MCP server over Streamable HTTP (https://huggingface.co/mcp). Searches models, datasets, Spaces, and ArXiv papers on the Hub; works unauthenticated for public discovery or with HF_TOKEN for private repos."
+author: Hugging Face
+homepage_url: https://huggingface.co/settings/mcp
+icon_url: https://scalix.world/logos/marketplace/huggingface.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - ai
+  - research
+tags:
+  - huggingface
+  - models
+  - datasets
+  - spaces
+  - papers
+  - europe
+  - france
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: huggingface
+  serverUrl: https://huggingface.co/mcp

@@ -1,0 +1,33 @@
+id: jetbrains
+name: JetBrains IDE
+summary: "Connect coding agents to IntelliJ IDEA, PyCharm, WebStorm, GoLand, and RustRover for symbols and refactoring."
+description: "JetBrains' official stdio proxy built in Prague and spawned via npx (@jetbrains/mcp-proxy@1.8.0). Bridges coding agents to a running JetBrains IDE's built-in MCP server for project symbol navigation, inspections, run configurations, and refactoring."
+author: JetBrains
+homepage_url: https://github.com/JetBrains/mcp-jetbrains
+icon_url: https://scalix.world/logos/marketplace/jetbrains.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - devtools
+  - development
+tags:
+  - jetbrains
+  - intellij
+  - pycharm
+  - webstorm
+  - refactoring
+  - europe
+  - czechia
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: jetbrains
+  command: npx
+  args:
+    - "-y"
+    - "@jetbrains/mcp-proxy@1.8.0"

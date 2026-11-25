@@ -4,6 +4,7 @@ summary: Free, no-authentication wiki and Q&A over any public GitHub repository 
 description: DeepWiki's hosted MCP server over Streamable HTTP (https://mcp.deepwiki.com/mcp). Reads the generated wiki structure and contents for public repositories and answers questions grounded in the repo. No key required.
 author: Cognition (Devin)
 homepage_url: https://docs.devin.ai/work-with-devin/deepwiki-mcp
+icon_url: https://scalix.world/logos/marketplace/cognition.png
 trust: verified
 version: 1.0.0
 featured: false

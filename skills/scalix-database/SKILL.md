@@ -6,6 +6,8 @@ description: "Provision and use ScalixNova, Scalix Cloud's serverless
   wants a Postgres database on Scalix, asks about ScalixNova, database
   branching, PITR, or pgvector on Scalix."
 metadata:
+  title: ScalixNova Database
+  summary: "Provision and operate ScalixNova serverless PostgreSQL with branching, PITR, SQL, and pgvector."
   author: Scalix World
   version: 1.6.1
   trust: official
@@ -18,6 +20,8 @@ metadata:
     - coder
     - ide
     - editor
+  homepage_url: https://scalix.world/mcp
+  icon_url: https://scalix.world/scalix-logo.svg
   source:
     repository: scalixworld/scalix-cloud-mcp
 ---

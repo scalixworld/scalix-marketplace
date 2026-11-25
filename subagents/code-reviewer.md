@@ -4,7 +4,10 @@ name: Code Reviewer
 summary: "Reviews a diff like a skeptical staff engineer: correctness first, blast radius second, style last, with every finding cited to file and line."
 description: A subagent that reviews a diff for correctness bugs, missing tests, security regressions and operational risk before style. Orders findings by severity, labels each with file and line, and separates blocking issues from nits.
 author: Scalix World
+homepage_url: https://github.com/scalixworld/scalix-marketplace
+icon_url: https://scalix.world/scalix-logo.svg
 trust: official
+tools: read-only
 version: 1.0.0
 categories:
   - development

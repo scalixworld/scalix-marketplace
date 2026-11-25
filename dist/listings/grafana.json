@@ -1,0 +1,38 @@
+{
+  "id": "grafana",
+  "kind": "mcp",
+  "name": "Grafana",
+  "summary": "Query Prometheus metrics, Loki logs, and Tempo traces; inspect dashboards, alert rules, and incidents.",
+  "description": "Grafana Labs' official hosted MCP server over Streamable HTTP (https://mcp.grafana.com/mcp). Supports OAuth 2.1 discovery so agents can inspect dashboards, run PromQL and LogQL queries, investigate incidents, and check OnCall schedules.",
+  "author": "Grafana Labs",
+  "homepage_url": "https://github.com/grafana/mcp-grafana",
+  "icon_url": "https://scalix.world/logos/marketplace/grafana.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "observability",
+    "debugging"
+  ],
+  "tags": [
+    "grafana",
+    "prometheus",
+    "loki",
+    "tempo",
+    "alerting",
+    "incidents",
+    "europe"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "grafana",
+    "serverUrl": "https://mcp.grafana.com/mcp"
+  }
+}

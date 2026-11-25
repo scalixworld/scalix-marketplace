@@ -677,9 +677,10 @@ function loadSkill(repoRoot: string, dir: string, errors: string[]): ListingDeta
     return null;
   }
   const summary = asStringOr(metadata.summary, description);
+  const displayName = asStringOr(metadata.title, name);
   const detail = validateCommon(
     {
-      name,
+      name: displayName,
       summary,
       description,
       author: asStringOr(metadata.author, 'Scalix World'),
@@ -706,7 +707,7 @@ function loadSkill(repoRoot: string, dir: string, errors: string[]): ListingDeta
   return {
     id,
     kind: 'skill',
-    name,
+    name: displayName,
     summary,
     description,
     author: asStringOr(metadata.author, 'Scalix World'),
@@ -759,7 +760,21 @@ function loadMarkdownListing(repoRoot: string, kind: 'rule' | 'subagent', filePa
     kind,
     id,
   );
-  const payloadErrors = validateFilePayload(kind, `${id}.md`, body);
+  const toolsValue =
+    data.tools === undefined
+      ? 'read-only'
+      : data.tools === 'read-only' || data.tools === 'standard' || data.tools === 'all'
+        ? data.tools
+        : null;
+  if (kind === 'subagent' && toolsValue === null) {
+    detail.push('tools must be one of read-only, standard, all');
+  }
+  const cleanSummary = (summary as string).replace(/\r?\n/g, ' ').trim();
+  const emittedContent =
+    kind === 'subagent'
+      ? `---\nname: ${id}\ndescription: ${cleanSummary}\ntools: ${toolsValue ?? 'read-only'}\n---\n\n${body.trimStart()}`
+      : body;
+  const payloadErrors = validateFilePayload(kind, `${id}.md`, emittedContent);
   if (detail.length > 0 || payloadErrors.length > 0) {
     errors.push(`${path.relative(repoRoot, filePath)}: ${[...detail, ...payloadErrors].join('; ')}`);
     return null;
@@ -780,7 +795,7 @@ function loadMarkdownListing(repoRoot: string, kind: 'rule' | 'subagent', filePa
     categories: asStringArrayOr(data.categories, []),
     tags: asStringArrayOr(data.tags, []),
     surfaces: asStringArrayOr(data.surfaces, ['coder', 'ide', 'editor']) as Surface[],
-    payload: { kind, fileName: `${id}.md`, content: body },
+    payload: { kind, fileName: `${id}.md`, content: emittedContent },
   };
 }
 
@@ -830,6 +845,9 @@ export function buildCatalog(repoRoot: string): BuildResult {
 
   details.sort((a, b) => {
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
+    const aOfficial = a.trust === 'official';
+    const bOfficial = b.trust === 'official';
+    if (aOfficial !== bOfficial) return aOfficial ? -1 : 1;
     return a.id.localeCompare(b.id);
   });
 
@@ -845,6 +863,8 @@ export interface CatalogIndex {
     name: string;
     summary: string;
     author: string;
+    homepage_url: string;
+    icon_url: string;
     trust: MarketplaceTrust;
     install_count: number;
     version: string;
@@ -852,6 +872,8 @@ export interface CatalogIndex {
     categories: string[];
     tags: string[];
     surfaces: Surface[];
+    transport?: 'http' | 'stdio';
+    command?: string;
   }>;
 }
 
@@ -865,6 +887,8 @@ export function buildIndex(details: ListingDetail[], generatedAt: string): Catal
       name: detail.name,
       summary: detail.summary,
       author: detail.author,
+      homepage_url: detail.homepage_url,
+      icon_url: detail.icon_url,
       trust: detail.trust,
       install_count: detail.install_count,
       version: detail.version,
@@ -872,6 +896,12 @@ export function buildIndex(details: ListingDetail[], generatedAt: string): Catal
       categories: detail.categories,
       tags: detail.tags,
       surfaces: detail.surfaces,
+      ...(detail.payload.kind === 'mcp'
+        ? {
+            transport: detail.payload.transport,
+            ...(detail.payload.transport === 'stdio' ? { command: detail.payload.command } : {}),
+          }
+        : {}),
     })),
   };
 }

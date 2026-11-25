@@ -1,0 +1,39 @@
+{
+  "id": "memory",
+  "kind": "mcp",
+  "name": "Knowledge Graph Memory",
+  "summary": "Reference MCP memory server backed by a local knowledge graph of entities, relations, and observations across sessions.",
+  "description": "The official reference Memory MCP server, spawned locally via npx (@modelcontextprotocol/server-memory@2.2.1). Stores persistent entities, relationships, and observations in a local JSON graph; clients confirm before installing stdio servers.",
+  "author": "Model Context Protocol",
+  "homepage_url": "https://github.com/modelcontextprotocol/servers",
+  "icon_url": "https://scalix.world/logos/marketplace/mcp.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "ai",
+    "development"
+  ],
+  "tags": [
+    "memory",
+    "knowledge-graph",
+    "entities",
+    "reference-server"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "stdio",
+    "serverLabel": "memory",
+    "command": "npx",
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-memory@2.2.1"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "meilisearch",
+  "kind": "mcp",
+  "name": "Meilisearch",
+  "summary": "Manage Meilisearch indexes, tune ranking rules, ingest documents, and run full-text or hybrid search.",
+  "description": "Meilisearch's official MCP server built in Paris and run locally via uvx (meilisearch-mcp==0.7.0). Uses MEILI_HTTP_ADDR and MEILI_MASTER_KEY so coding agents can inspect indexes, tune ranking rules, monitor tasks, and query documents.",
+  "author": "Meilisearch",
+  "homepage_url": "https://github.com/meilisearch/meilisearch-mcp",
+  "icon_url": "https://scalix.world/logos/marketplace/meilisearch.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "search",
+    "devtools"
+  ],
+  "tags": [
+    "meilisearch",
+    "search",
+    "indexing",
+    "full-text",
+    "hybrid-search",
+    "europe",
+    "france"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "stdio",
+    "serverLabel": "meilisearch",
+    "command": "uvx",
+    "args": [
+      "meilisearch-mcp==0.7.0"
+    ],
+    "requiredEnv": [
+      "MEILI_HTTP_ADDR",
+      "MEILI_MASTER_KEY"
+    ]
+  }
+}
