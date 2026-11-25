@@ -1,0 +1,35 @@
+id: sarvam-ai
+name: Sarvam AI
+summary: "Indian-language speech-to-text, Bulbul text-to-speech, translation, document parsing, and Sarvam SDK helpers."
+description: "Sarvam AI's official MCP server run locally via uvx (sarvam-mcp==0.3.0). Gives coding agents access to Indic speech recognition, Bulbul text-to-speech, translation across Indian languages, document intelligence, and Sarvam API reference helpers using SARVAM_API_KEY."
+author: Sarvam AI
+homepage_url: https://github.com/sarvamai/sarvam-mcp
+icon_url: https://scalix.world/logos/marketplace/sarvam-ai.png
+trust: verified
+version: 1.0.0
+featured: true
+categories:
+  - ai
+  - speech
+tags:
+  - sarvam
+  - indic
+  - speech
+  - tts
+  - stt
+  - translation
+  - india
+  - asia
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: sarvam-ai
+  command: uvx
+  args:
+    - "sarvam-mcp==0.3.0"
+  requiredEnv:
+    - SARVAM_API_KEY

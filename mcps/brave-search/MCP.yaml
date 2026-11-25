@@ -1,0 +1,32 @@
+id: brave-search
+name: Brave Search
+summary: "Query the independent Brave Search index for web, news, image, video, and local search results."
+description: "Brave's official MCP server, spawned locally via npx (@brave/brave-search-mcp-server@2.2.0). Queries the independent Brave Search index using BRAVE_API_KEY; clients prompt for confirmation before installing a stdio server."
+author: Brave
+homepage_url: https://github.com/brave/brave-search-mcp-server
+icon_url: https://scalix.world/logos/marketplace/brave.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - search
+  - research
+tags:
+  - brave
+  - search
+  - web-search
+  - news
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: brave-search
+  command: npx
+  args:
+    - "-y"
+    - "@brave/brave-search-mcp-server@2.2.0"
+  requiredEnv:
+    - BRAVE_API_KEY

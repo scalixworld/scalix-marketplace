@@ -4,6 +4,7 @@ summary: Search errors, triage issues, inspect traces, and read logs from Sentry
 description: "Sentry's hosted MCP server over Streamable HTTP (https://mcp.sentry.dev/mcp). Built for coding agents: error search, issue triage, performance traces and log access. Connects via OAuth, or with a Sentry auth token in clients that send a custom Authorization header."
 author: Sentry
 homepage_url: https://github.com/getsentry/sentry-mcp
+icon_url: https://scalix.world/logos/marketplace/sentry.svg
 trust: verified
 version: 1.0.0
 featured: false

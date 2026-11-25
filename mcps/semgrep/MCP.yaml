@@ -1,0 +1,29 @@
+id: semgrep
+name: Semgrep
+summary: "Scan code for security vulnerabilities, validate custom Semgrep rules, and triage AppSec findings."
+description: "Semgrep's official hosted MCP server over Streamable HTTP (https://mcp.semgrep.ai/mcp). Authenticates via Semgrep OAuth so coding agents can run static analysis checks, validate custom Semgrep rules, and triage AppSec findings before merge."
+author: Semgrep
+homepage_url: https://mcp.semgrep.ai
+icon_url: https://scalix.world/logos/marketplace/semgrep.png
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - security
+  - quality
+tags:
+  - semgrep
+  - sast
+  - security
+  - vulnerabilities
+  - appsec
+  - rules
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: semgrep
+  serverUrl: https://mcp.semgrep.ai/mcp

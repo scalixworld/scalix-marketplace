@@ -4,6 +4,8 @@ name: Pre-Merge Security Review
 summary: Pre-PR security checklist covering credentials, untrusted input, SSRF, path traversal, supply-chain licenses, and production deploy gates.
 description: A structured security review checklist for pull requests. Covers credential handling, input validation, SSRF and traversal guards, dependency licensing, and safe production deployment practices.
 author: Scalix World
+homepage_url: https://github.com/scalixworld/scalix-marketplace
+icon_url: https://scalix.world/scalix-logo.svg
 trust: official
 version: 1.0.0
 categories:

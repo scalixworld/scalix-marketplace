@@ -343,9 +343,13 @@ test('real catalog in this repo builds clean', () => {
   }
   for (const detail of details) {
     assert.ok(detail.surfaces.length > 0, `${detail.id} has surfaces`);
+    if (detail.featured || detail.trust !== 'community') {
+      assert.ok(detail.icon_url.startsWith('https://'), `${detail.id} has https icon_url`);
+    }
     if (detail.kind === 'skill') {
       assert.equal(detail.payload.kind, 'skill');
       if (detail.payload.kind === 'skill') {
+        assert.equal(detail.payload.name, detail.id, `${detail.id} payload.name stays kebab id`);
         assert.ok(detail.payload.files.some(f => f.path === 'SKILL.md'), `${detail.id} ships SKILL.md`);
       }
     }
@@ -354,8 +358,16 @@ test('real catalog in this repo builds clean', () => {
       if (detail.payload.kind === 'rule' || detail.payload.kind === 'subagent') {
         assert.ok(detail.payload.fileName.endsWith('.md'));
       }
+      if (detail.payload.kind === 'subagent') {
+        assert.ok(detail.payload.content.startsWith(`---\nname: ${detail.id}\n`), `${detail.id} starts with runtime frontmatter`);
+        assert.match(detail.payload.content, /\ntools:\s+(?:read-only|standard|all)\n---\n/);
+      }
     }
   }
+  const scalixAi = details.find(d => d.id === 'scalix-ai');
+  assert.ok(scalixAi && scalixAi.name === 'Scalix AI');
+  assert.equal(details[0]?.id, 'scalix-cloud');
+  assert.equal(details[1]?.id, 'adyen');
 });
 
 test('duplicate ids across kinds are rejected', () => {
@@ -440,10 +452,41 @@ test('writeCatalog emits index and per-id detail files', () => {
     for (const entry of indexParsed.listings) {
       assert.equal(typeof entry.id, 'string');
       assert.equal(typeof entry.summary, 'string');
+      assert.equal(typeof entry.icon_url, 'string');
+      assert.equal(typeof entry.homepage_url, 'string');
       assert.ok(Array.isArray(entry.surfaces));
     }
     const reordered = buildIndex([details[details.length - 1], details[0]], '2026-11-18T00:00:00Z');
     assert.equal(reordered.count, 2);
+
+    const uvxListing = {
+      id: 'sample-uvx',
+      kind: 'mcp' as const,
+      name: 'Sample UVX',
+      summary: 'Sample stdio MCP launched via uvx for index command emission verification.',
+      description: '',
+      author: 'Example',
+      homepage_url: 'https://example.com',
+      icon_url: 'https://scalix.world/logos/marketplace/mcp.svg',
+      trust: 'verified' as const,
+      install_count: 0,
+      version: '1.0.0',
+      featured: false,
+      categories: ['ai'],
+      tags: ['india'],
+      surfaces: ['coder' as const],
+      payload: {
+        kind: 'mcp' as const,
+        transport: 'stdio' as const,
+        serverLabel: 'sample-uvx',
+        command: 'uvx',
+        args: ['sample-mcp==1.0.0'],
+      },
+    };
+    assert.deepEqual(validateMcpPayload(uvxListing.payload as unknown as Record<string, unknown>), []);
+    const built = buildIndex([uvxListing], '2026-11-18T00:00:00Z');
+    assert.equal(built.listings[0]?.transport, 'stdio');
+    assert.equal(built.listings[0]?.command, 'uvx');
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

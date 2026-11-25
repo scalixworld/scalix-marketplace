@@ -1,0 +1,36 @@
+{
+  "id": "exa",
+  "kind": "mcp",
+  "name": "Exa Search",
+  "summary": "Run live web search, technical documentation lookups, and grounded code context retrieval via Exa.",
+  "description": "Exa's hosted MCP server over Streamable HTTP (https://mcp.exa.ai/mcp). Gives coding agents real-time web search and code-focused retrieval so answers stay grounded in current external sources.",
+  "author": "Exa",
+  "homepage_url": "https://github.com/exa-labs/exa-mcp-server",
+  "icon_url": "https://scalix.world/logos/marketplace/exa.png",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "search",
+    "research"
+  ],
+  "tags": [
+    "exa",
+    "search",
+    "web-search",
+    "code-context",
+    "research"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "exa",
+    "serverUrl": "https://mcp.exa.ai/mcp"
+  }
+}

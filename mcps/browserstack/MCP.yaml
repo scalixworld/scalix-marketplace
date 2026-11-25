@@ -1,0 +1,30 @@
+id: browserstack
+name: BrowserStack
+summary: "Run cross-browser and real-device tests, inspect session logs, debug failures, and run accessibility scans."
+description: "BrowserStack's official hosted MCP server over Streamable HTTP (https://mcp.browserstack.com/mcp). Authenticates via BrowserStack OAuth so coding agents can execute Automate and App Automate sessions, inspect test logs, manage Test Management cases, and scan accessibility."
+author: BrowserStack
+homepage_url: https://github.com/browserstack/mcp-server
+icon_url: https://scalix.world/logos/marketplace/browserstack.png
+trust: verified
+version: 1.0.0
+featured: true
+categories:
+  - testing
+  - browser
+tags:
+  - browserstack
+  - testing
+  - qa
+  - mobile
+  - accessibility
+  - india
+  - asia
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: browserstack
+  serverUrl: https://mcp.browserstack.com/mcp

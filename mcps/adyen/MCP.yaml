@@ -1,0 +1,36 @@
+id: adyen
+name: Adyen
+summary: "Create Checkout sessions, payment links, and refunds; inspect merchant accounts, webhooks, and terminals."
+description: "Adyen's official MCP server built in Amsterdam and spawned locally via npx (@adyen/mcp@0.6.0). Defaults to --env=TEST using ADYEN_API_KEY so coding agents can create Checkout sessions, test webhooks, inspect payment methods, and manage merchant accounts."
+author: Adyen
+homepage_url: https://github.com/Adyen/adyen-mcp
+icon_url: https://scalix.world/logos/marketplace/adyen.svg
+trust: verified
+version: 1.0.0
+featured: true
+categories:
+  - payments
+  - fintech
+tags:
+  - adyen
+  - payments
+  - checkout
+  - webhooks
+  - terminals
+  - europe
+  - netherlands
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: adyen
+  command: npx
+  args:
+    - "-y"
+    - "@adyen/mcp@0.6.0"
+    - "--env=TEST"
+  requiredEnv:
+    - ADYEN_API_KEY

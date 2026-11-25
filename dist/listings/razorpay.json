@@ -1,0 +1,38 @@
+{
+  "id": "razorpay",
+  "kind": "mcp",
+  "name": "Razorpay",
+  "summary": "Create orders, UPI and standard payment links, and QR codes; manage captures, refunds, and settlements.",
+  "description": "Razorpay's official hosted MCP server over Streamable HTTP (https://mcp.razorpay.com/mcp), built in Bengaluru for Indian and Southeast Asian merchants. Supports OAuth 2.1 sign-in or merchant API credentials to create orders, payment links, QR codes, captures, and refunds.",
+  "author": "Razorpay",
+  "homepage_url": "https://github.com/razorpay/razorpay-mcp-server",
+  "icon_url": "https://scalix.world/logos/marketplace/razorpay.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "payments",
+    "fintech"
+  ],
+  "tags": [
+    "razorpay",
+    "payments",
+    "upi",
+    "orders",
+    "refunds",
+    "india",
+    "asia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "razorpay",
+    "serverUrl": "https://mcp.razorpay.com/mcp"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "wix",
+  "kind": "mcp",
+  "name": "Wix",
+  "summary": "Query Wix SDK docs, manage headless CMS collections, inspect stores, and call Wix business APIs.",
+  "description": "Wix's official hosted MCP server over Streamable HTTP (https://mcp.wix.com/mcp). Uses Wix OAuth so coding agents can query Wix SDK docs, manage headless CMS collections, inspect eCommerce catalogs, and build Wix site integrations.",
+  "author": "Wix",
+  "homepage_url": "https://dev.wix.com/docs/sdk/articles/use-the-wix-mcp/about-the-wix-mcp",
+  "icon_url": "https://scalix.world/logos/marketplace/wix.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "cms",
+    "commerce"
+  ],
+  "tags": [
+    "wix",
+    "cms",
+    "commerce",
+    "sites",
+    "bookings",
+    "asia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "wix",
+    "serverUrl": "https://mcp.wix.com/mcp"
+  }
+}

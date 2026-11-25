@@ -1,0 +1,38 @@
+{
+  "id": "apify",
+  "kind": "mcp",
+  "name": "Apify",
+  "summary": "Run Apify Store Actors for web scraping, structured data extraction, crawling, and browser automation.",
+  "description": "Apify's official hosted MCP server over Streamable HTTP (https://mcp.apify.com), built in Prague. Authenticates via OAuth or an Apify Bearer token so agents can discover Actors, inspect dataset schemas, run crawlers, and read structured extraction results.",
+  "author": "Apify",
+  "homepage_url": "https://github.com/apify/apify-mcp-server",
+  "icon_url": "https://scalix.world/logos/marketplace/apify.png",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "scraping",
+    "research"
+  ],
+  "tags": [
+    "apify",
+    "scraping",
+    "actors",
+    "crawling",
+    "browser",
+    "europe",
+    "czechia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "apify",
+    "serverUrl": "https://mcp.apify.com"
+  }
+}

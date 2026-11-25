@@ -1,0 +1,33 @@
+id: firecrawl
+name: Firecrawl
+summary: "Scrape, crawl, map, and extract clean Markdown or structured JSON data from any public website."
+description: "Firecrawl's MCP server, spawned locally via npx (firecrawl-mcp@3.41.0). Converts documentation sites and dynamic web pages into LLM-ready Markdown and structured JSON using FIRECRAWL_API_KEY."
+author: Firecrawl
+homepage_url: https://github.com/firecrawl/firecrawl-mcp-server
+icon_url: https://scalix.world/logos/marketplace/firecrawl.png
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - search
+  - browser
+tags:
+  - firecrawl
+  - scraping
+  - crawling
+  - markdown
+  - web
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: firecrawl
+  command: npx
+  args:
+    - "-y"
+    - "firecrawl-mcp@3.41.0"
+  requiredEnv:
+    - FIRECRAWL_API_KEY

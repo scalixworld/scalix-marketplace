@@ -1,0 +1,39 @@
+{
+  "id": "canva",
+  "kind": "mcp",
+  "name": "Canva",
+  "summary": "Search Canva designs, inspect brand templates, autofill layouts, and export PNG, PDF, or deck assets.",
+  "description": "Canva's official hosted MCP server over Streamable HTTP (https://mcp.canva.com/mcp), built in Sydney. Uses Canva OAuth so agents can browse folders, generate and autofill designs from templates, and export PNG, PDF, or presentation assets.",
+  "author": "Canva",
+  "homepage_url": "https://www.canva.dev/docs/connect/mcp-server/",
+  "icon_url": "https://scalix.world/logos/marketplace/canva.png",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "design",
+    "productivity"
+  ],
+  "tags": [
+    "canva",
+    "design",
+    "assets",
+    "templates",
+    "brand",
+    "apac",
+    "asia",
+    "australia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "canva",
+    "serverUrl": "https://mcp.canva.com/mcp"
+  }
+}

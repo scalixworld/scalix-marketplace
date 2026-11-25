@@ -1,0 +1,46 @@
+{
+  "id": "cashfree",
+  "kind": "mcp",
+  "name": "Cashfree Payments",
+  "summary": "Manage Cashfree Payment Gateway orders, payment links, payouts, settlements, disputes, and KYC flows.",
+  "description": "Cashfree's official MCP server spawned locally via npx (@cashfreepayments/cashfree-mcp@1.0.1). Connects coding agents to Cashfree Payment Gateway, Payouts, SecureID KYC, and developer documentation search using Cashfree sandbox or production credentials.",
+  "author": "Cashfree",
+  "homepage_url": "https://github.com/cashfree/cashfree-mcp",
+  "icon_url": "https://scalix.world/logos/marketplace/cashfree.png",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": false,
+  "categories": [
+    "payments",
+    "fintech"
+  ],
+  "tags": [
+    "cashfree",
+    "payments",
+    "payouts",
+    "kyc",
+    "settlements",
+    "india",
+    "asia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "stdio",
+    "serverLabel": "cashfree",
+    "command": "npx",
+    "args": [
+      "-y",
+      "@cashfreepayments/cashfree-mcp@1.0.1"
+    ],
+    "requiredEnv": [
+      "PAYMENTS_APP_ID",
+      "PAYMENTS_APP_SECRET"
+    ]
+  }
+}

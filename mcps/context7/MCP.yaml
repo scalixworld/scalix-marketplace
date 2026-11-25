@@ -4,6 +4,7 @@ summary: Up-to-date documentation for any library, pulled straight from the sour
 description: Upstash Context7 MCP server over Streamable HTTP (https://mcp.context7.com/mcp). Fetches current, version-matched library docs instead of relying on stale training data. Works without a key on the free tier; a Context7 API key raises the rate limit.
 author: Upstash
 homepage_url: https://context7.com
+icon_url: https://scalix.world/logos/marketplace/upstash.svg
 trust: verified
 version: 1.0.0
 featured: false
@@ -13,6 +14,7 @@ tags:
   - docs
   - libraries
   - upstash
+  - europe
 surfaces:
   - coder
   - ide

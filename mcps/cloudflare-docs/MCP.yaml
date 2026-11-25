@@ -1,0 +1,28 @@
+id: cloudflare-docs
+name: Cloudflare Docs
+summary: "Search current Cloudflare documentation for Workers, Pages, R2, D1, DNS, Zero Trust, and edge networking."
+description: "Cloudflare's public, no-authentication MCP server over Streamable HTTP (https://docs.mcp.cloudflare.com/mcp). Searches official Cloudflare developer docs and reference material directly from your coding agent."
+author: Cloudflare
+homepage_url: https://github.com/cloudflare/mcp-server-cloudflare
+icon_url: https://scalix.world/logos/marketplace/cloudflare.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - documentation
+  - cloud
+tags:
+  - cloudflare
+  - workers
+  - dns
+  - cdn
+  - docs
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: cloudflare-docs
+  serverUrl: https://docs.mcp.cloudflare.com/mcp

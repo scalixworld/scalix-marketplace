@@ -1,0 +1,42 @@
+{
+  "id": "postman",
+  "kind": "mcp",
+  "name": "Postman",
+  "summary": "Manage Postman API collections, environments, OpenAPI specs, mock servers, and workspace requests.",
+  "description": "Postman's official hosted MCP server over Streamable HTTP (https://mcp.postman.com/mcp). Authenticates via OAuth or POSTMAN_API_KEY so coding agents can inspect and update Postman collections, environments, OpenAPI specs, and API test suites.",
+  "author": "Postman",
+  "homepage_url": "https://github.com/postmanlabs/postman-mcp-server",
+  "icon_url": "https://scalix.world/logos/marketplace/postman.svg",
+  "trust": "verified",
+  "install_count": 0,
+  "version": "1.0.0",
+  "featured": true,
+  "categories": [
+    "devtools",
+    "testing"
+  ],
+  "tags": [
+    "postman",
+    "api",
+    "collections",
+    "environments",
+    "mocks",
+    "india",
+    "asia"
+  ],
+  "surfaces": [
+    "coder",
+    "ide",
+    "editor"
+  ],
+  "payload": {
+    "kind": "mcp",
+    "transport": "http",
+    "serverLabel": "postman",
+    "serverUrl": "https://mcp.postman.com/mcp",
+    "authorizationEnv": "POSTMAN_API_KEY",
+    "requiredEnv": [
+      "POSTMAN_API_KEY"
+    ]
+  }
+}

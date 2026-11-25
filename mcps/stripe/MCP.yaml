@@ -1,0 +1,31 @@
+id: stripe
+name: Stripe
+summary: "Inspect customers, payment intents, subscriptions, invoices, payment links, and Stripe documentation."
+description: "Stripe's hosted MCP server over Streamable HTTP (https://mcp.stripe.com). Lets coding agents search Stripe docs and manage customers, products, prices, invoices, and payment links via OAuth or a restricted Stripe API key."
+author: Stripe
+homepage_url: https://docs.stripe.com/mcp
+icon_url: https://scalix.world/logos/marketplace/stripe.svg
+trust: verified
+version: 1.0.0
+featured: true
+categories:
+  - payments
+  - cloud
+tags:
+  - stripe
+  - payments
+  - billing
+  - subscriptions
+  - webhooks
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: stripe
+  serverUrl: https://mcp.stripe.com
+  authorizationEnv: STRIPE_SECRET_KEY
+  requiredEnv:
+    - STRIPE_SECRET_KEY

@@ -1,0 +1,36 @@
+id: qdrant
+name: Qdrant
+summary: "Store and retrieve semantic memories, code snippets, and vector search results across Qdrant collections."
+description: "Qdrant's official MCP server built in Berlin and run locally via uvx (mcp-server-qdrant==0.8.1). Connects to Qdrant Cloud or a self-hosted Qdrant cluster using QDRANT_URL, QDRANT_API_KEY, and COLLECTION_NAME to store and retrieve semantic memories."
+author: Qdrant
+homepage_url: https://github.com/qdrant/mcp-server-qdrant
+icon_url: https://scalix.world/logos/marketplace/qdrant.png
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - search
+  - memory
+tags:
+  - qdrant
+  - vector-search
+  - embeddings
+  - rag
+  - memory
+  - europe
+  - germany
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: stdio
+  serverLabel: qdrant
+  command: uvx
+  args:
+    - "mcp-server-qdrant==0.8.1"
+  requiredEnv:
+    - QDRANT_URL
+    - QDRANT_API_KEY
+    - COLLECTION_NAME

@@ -1,0 +1,30 @@
+id: atlassian
+name: Atlassian
+summary: "Search Confluence architecture docs, query Jira issues, and inspect Compass components across your workspace."
+description: "Atlassian's hosted MCP server over Streamable HTTP (https://mcp.atlassian.com/v1/mcp). Uses OAuth with workspace permissions so agents can search Confluence architecture docs and create or update Jira issues."
+author: Atlassian
+homepage_url: https://www.atlassian.com/platform/remote-mcp-server
+icon_url: https://scalix.world/logos/marketplace/atlassian.svg
+trust: verified
+version: 1.0.0
+featured: false
+categories:
+  - productivity
+  - development
+tags:
+  - atlassian
+  - jira
+  - confluence
+  - compass
+  - issues
+  - apac
+  - australia
+surfaces:
+  - coder
+  - ide
+  - editor
+payload:
+  kind: mcp
+  transport: http
+  serverLabel: atlassian
+  serverUrl: https://mcp.atlassian.com/v1/mcp
